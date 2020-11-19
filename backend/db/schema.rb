@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2020_11_18_202501) do
     t.string "image"
     t.string "flavor_text"
     t.boolean "is_special"
-    t.string "type"
+    t.string "role"
     t.integer "strength"
     t.string "ability"
     t.datetime "created_at", precision: 6, null: false
