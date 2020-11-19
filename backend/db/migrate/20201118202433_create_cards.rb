@@ -5,7 +5,7 @@ class CreateCards < ActiveRecord::Migration[6.0]
       t.string :image
       t.string :flavor_text
       t.boolean :is_special
-      t.string :type
+      t.string :role
       t.integer :strength
       t.string :ability
 
