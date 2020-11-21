@@ -14,12 +14,12 @@ import GameBoard from './containers/GameBoard'
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <Router history={history}>
+    <Router history={history}>
+      <Provider store={store}>
         <Route exact path='/login' component={Login} />
         <Route exact path='/game' component={GameBoard} />
-      </Router>
-    </Provider>
+      </Provider>
+    </Router >
   );
 }
 
