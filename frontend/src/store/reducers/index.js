@@ -6,6 +6,7 @@ export const initialState = {
     passwordInput:'',
     //this will be user object we get back from login
     user:{},
+    ownedCards:[],
     token:''
 }
 
@@ -21,7 +22,7 @@ export const reducer = (state,action) => {
             break;
 
         case 'SET_USER':
-            return {...state,user:action.user,token:action.token}
+            return {...state,user:action.user,token:action.token,ownedCards:action.ownedCards}
             break;
         
         default: 

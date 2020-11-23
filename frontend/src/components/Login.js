@@ -29,7 +29,7 @@ const Login = () => {
         })
             .then(res => res.json())
             .then(userInfo => {
-                dispatch({ type: 'SET_USER', user: userInfo.user, token:userInfo.jwt })
+                dispatch({ type: 'SET_USER', user: userInfo.user, ownedCards:userInfo.cards, token:userInfo.jwt })
                 history.push('/')
             })
 
