@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import history from '../history'
 
-const Login = (props) => {
+const Login = () => {
     const dispatch = useDispatch()
     const usernameInput = useSelector((state) => state.usernameInput)
     const passwordInput = useSelector((state) => state.passwordInput)
@@ -29,12 +29,12 @@ const Login = (props) => {
         })
             .then(res => res.json())
             .then(userInfo => {
-                dispatch({ type: 'SET_USER', user: userInfo.user, token:userInfo.jwt })
-                history.push('/game')
+                dispatch({ type: 'SET_USER', user: userInfo.user, ownedCards:userInfo.cards, token:userInfo.jwt })
+                history.push('/')
             })
 
     }
-
+    
     return (
         <div>
             <input type='text' placeholder='username' onChange={(e) => handleUsernameChange(e)} />

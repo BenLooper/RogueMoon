@@ -17,7 +17,8 @@ const App = () => {
     <Router history={history}>
       <Provider store={store}>
         <Route exact path='/login' component={Login} />
-        <Route exact path='/game' component={GameBoard} />
+        {/* Root is gameboard atm, this will change when I add campaign board */}
+        <Route exact path='/' component={GameBoard} />
       </Provider>
     </Router >
   );
