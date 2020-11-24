@@ -8,12 +8,8 @@ function Battlefield() {
     const dispatch = useDispatch()
 
     const gameOn = useSelector((state) => state.gameOn)
-    const enemySpace = useSelector((state) => state.enemySpace)
-    const enemyGround = useSelector((state) => state.enemyGround)
-    const enemyFoot = useSelector((state) => state.enemyFoot)
-    const userFoot = useSelector((state) => state.userFoot)
-    const userGround = useSelector((state) => state.userGround)
-    const userSpace = useSelector((state) => state.userSpace)
+    const enemyField = useSelector((state) => state.enemyField)
+    const userField = useSelector((state) => state.userField)
     const hand = useSelector((state) => state.hand)
 
     //Set the stage...SET_GAME_CARDS will eventually be called in pre-game component
@@ -24,6 +20,14 @@ function Battlefield() {
         }
     })
 
+    const rowScore = (array) => {
+        let score = 0
+        for (let i = 0; i < array.length; i++) {
+            score += array[i].strength
+        }
+        return score
+    }
+
     return (
         //These rows populate with played cards
         //Furthest left is total strength, then active buff, then cards
@@ -33,7 +37,7 @@ function Battlefield() {
 
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{enemySpace}</Row>
+                    <Row className="card-tray">{enemyField.space}</Row>
                 </Col>
 
             </Row>
@@ -41,7 +45,7 @@ function Battlefield() {
                 <Col style={{ border: 'solid' }}>
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{enemyGround}</Row>
+                    <Row className="card-tray">{enemyField.ground}</Row>
                 </Col>
 
             </Row>
@@ -49,40 +53,42 @@ function Battlefield() {
                 <Col style={{ border: 'solid' }}>
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{enemyFoot}</Row>
+                    <Row className="card-tray">{enemyField.foot}</Row>
                 </Col>
 
             </Row>
             <br></br>
             <Row>
                 <Col style={{ border: 'solid' }}>
+                    {rowScore(userField.foot)}
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{userFoot.map(card=><UnitCard card={card} key={card.id}/>)}</Row>
+                    <Row className="card-tray">{userField.foot.map(card => <UnitCard card={card} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
             <Row>
                 <Col style={{ border: 'solid' }}>
+                    {rowScore(userField.ground)}
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{userGround.map(card=><UnitCard card={card} key={card.id}/>)}</Row>
+                    <Row className="card-tray">{userField.ground.map(card => <UnitCard card={card} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
             <Row>
                 <Col style={{ border: 'solid' }}>
-
+                    {rowScore(userField.space)}
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{userSpace.map(card=><UnitCard card={card} key={card.id}/>)}</Row>
+                    <Row className="card-tray">{userField.space.map(card => <UnitCard card={card} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
             <br></br>
             {/* This row populates with cards drawn from a users deck.  */}
             <Row className="card-tray">
-                {hand.map(card => <UnitCard card={card} hand={true} key={card.id}/>)}
+                {hand.map(card => <UnitCard card={card} hand={true} key={card.id} />)}
             </Row>
         </Container>
     )

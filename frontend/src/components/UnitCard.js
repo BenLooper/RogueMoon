@@ -4,13 +4,8 @@ import {useSelector,useDispatch} from 'react-redux'
 const UnitCard = ({ card, hand }) => {
     
     const playCard = () => {
-        let role = capitalize(card.role)
+        let role = card.role
         dispatch({type:"PLAY_CARD", role:role, card:card})
-    }
-    
-    const capitalize = (str) => {
-        const lower =  str.toLowerCase()
-        return str.charAt(0).toUpperCase() + lower.slice(1)
     }
     
     const dispatch = useDispatch()
