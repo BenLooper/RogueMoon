@@ -13,13 +13,13 @@ function GameBoard() {
         return (
             <Container fluid >
                 <Row>
-                    <Col xs={4}>
+                    <Col xs={3}>
                         <PlayerInfo />
                     </Col>
-                    <Col xs={5}>
+                    <Col xs={7}>
                         <Battlefield />
                     </Col>
-                    <Col xs={3}>
+                    <Col xs={2}>
                         <DeckInfo />
                     </Col>
                 </Row>
