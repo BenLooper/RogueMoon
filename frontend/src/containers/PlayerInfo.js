@@ -1,8 +1,17 @@
 import { Container, Row, Col } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 function PlayerInfo() {
+
+    let userScore = useSelector((state) => state.userScore)
+    let enemyScore = useSelector((state) => state.enemyScore)
+
+
     return (
-            <p>This Column is gonna have all the player info</p>
+        <div>
+            <h1>User Score: {userScore}</h1>
+            <h1>Enemy Score: {enemyScore}</h1>
+        </div>
     )
 }
 
