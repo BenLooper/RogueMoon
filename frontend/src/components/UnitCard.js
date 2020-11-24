@@ -1,8 +1,22 @@
 import { Card } from 'react-bootstrap'
+import {useSelector,useDispatch} from 'react-redux'
 
-const UnitCard = ({ card }) => {
+const UnitCard = ({ card, hand }) => {
+    
+    const playCard = () => {
+        let role = capitalize(card.role)
+        dispatch({type:"PLAY_CARD", role:role, card:card})
+    }
+    
+    const capitalize = (str) => {
+        const lower =  str.toLowerCase()
+        return str.charAt(0).toUpperCase() + lower.slice(1)
+    }
+    
+    const dispatch = useDispatch()
+
     return (
-        <Card className="unit-card">
+        <Card className="unit-card" onClick={hand?()=>playCard():null}>
             <Card.Img variant='top' src={card.image} />
             <Card.ImgOverlay>
                 <Card.Text className="strength">{card.strength}</Card.Text>

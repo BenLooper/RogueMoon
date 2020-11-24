@@ -42,27 +42,8 @@
   height: 130px ;
   width:auto;
   border: solid;
-  padding: 10px;
-  margin: 5px;
-}
-
-.hand-tray{
-  height: 130px ;
-  width:auto;
-  border: solid;
   justify-content: center;
 }
-
-/* This is the CardGroup component */
-.hand {
-  height: 100% ;
-  width:auto;
-  border: solid;
-  margin-top:2px;
-  flex-direction: row;
-  
-}
-
 
 /* Card */
 .unit-card{
