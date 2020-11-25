@@ -9,7 +9,9 @@ export const initialState = {
     //gameboard
     gameOn: false,
     gameCards: [],
+    enemyGameCards: [],
     hand: [],
+    enemyHand: [],
     userDiscard: [],
     enemyDiscard: [],
     enemyField: {
@@ -25,11 +27,12 @@ export const initialState = {
 
     //scores 
     userScore:0,
-    enemyScore:10,
+    enemyScore:0,
 
     //passing
+    userTurn: true,
     userPass: false,
-    enemyPass: true,
+    enemyPass: false,
 
     //reactors 
     userReactors: 2,
@@ -64,18 +67,19 @@ export const reducer = (state, action) => {
             break;
 
         case 'SET_USER':
-            return { ...state, user: action.user, ownedCards: action.ownedCards, games: action.games }
+            return { ...state, user: action.user, ownedCards: action.ownedCards, games: action.games, gameOn:false }
             break;
 
         case 'SET_GAME_CARDS':
-            //TODO -> Gets sent a list of chosen cards to set as gameCards
-            return { ...state, gameCards: state.ownedCards, gameOn: true }
+            //TODO -> Gets sent a list of chosen cards to set as gameCards from the selection screen
+            return { ...state, gameCards: state.ownedCards, enemyGameCards: state.ownedCards, gameOn: true }
             break;
 
         case 'SET_HAND':
+            //Separate from game cards because hand is drawn in the battlefield, not the selection screen
             //TODO -> Hand is randomly drawn from gameCards
             let hand = state.gameCards.slice(5, 10);
-            return { ...state, hand: hand }
+            return { ...state, hand: hand , enemyHand: hand}
             break;
 
         case 'PLAY_CARD':
@@ -83,19 +87,36 @@ export const reducer = (state, action) => {
             let role = action.role
 
             //Remove the card from hand
-            let updatedHand = state.hand.filter(card => card.id !== action.card.id)
+            let updatedUserHand = state.hand.filter(card => card.id !== action.card.id)
 
             //Update the row, then update the field with that row 
-            let updatedRow = [...state.userField[role], action.card]
-            let updatedField = { ...state.userField, [role]: updatedRow }
+            let updatedUserRow = [...state.userField[role], action.card]
+            let updatedUserField = { ...state.userField, [role]: updatedUserRow }
 
             //Find the new total, including the added card
-            let newTotal = newTotalScore(updatedField)
-            return { ...state, userField: updatedField, hand: updatedHand, userScore: newTotal }
+            let newUserTotal = newTotalScore(updatedUserField)
+            return { ...state, userField: updatedUserField, hand: updatedUserHand, userScore: newUserTotal }
+            break;
+        
+        case 'ENEMY_PLAY':
+            //grab card and remove it from hand
+            let chosenCard = state.enemyHand.slice(0,1)[0]
+
+            let updatedEnemyHand = state.enemyHand.filter(card => card.id !== chosenCard.id)
+
+            let updatedEnemyRow = [...state.enemyField[chosenCard.role], chosenCard]
+            let updatedEnemyField = { ...state.enemyField, [chosenCard.role]: updatedEnemyRow }
+
+            let newEnemyTotal = newTotalScore(updatedEnemyField)
+            return { ...state, enemyField: updatedEnemyField, enemyHand: updatedEnemyHand, enemyScore: newEnemyTotal }
+            break;
+
+        case 'ENEMY_PASS':
+            return {...state, enemyPass:true, userTurn: true}
             break;
 
         case 'USER_PASS':
-            return {...state, userPass:true}
+            return {...state, userPass:true, userTurn:false}
             break;
         
         case 'ROUND_OVER':
@@ -110,22 +131,29 @@ export const reducer = (state, action) => {
         case 'RESET_BOARD':
             //This is super ugly but it works. We're setting the discard to everything in userField
             //And then we're hardcoding in a clean new userField
-            let newDiscard = Object.values(state.userField).splice(0).flat();
+            let newUserDiscard = Object.values(state.userField).splice(0).flat();
+            let newEnemyDiscard = Object.values(state.enemyField).splice(0).flat();
             let cleanUserField = {userField: {
+                space: [],
+                ground: [],
+                foot: []
+            }}
+            let cleanEnemyField = {enemyField: {
                 space: [],
                 ground: [],
                 foot: []
             }}
             return {...state, 
                 userField:cleanUserField.userField, 
-                //This will need to set enemyPass to false as well (once and enemy can play)
+                enemyField:cleanEnemyField.enemyField,
                 userPass:false, 
-                userDiscard:newDiscard,
-                //reset scores, set to 10 to simulate game
+                enemyPass:false,
+                userDiscard:[...state.userDiscard,...newUserDiscard],
+                enemyDiscard:[...state.enemyDiscard,...newEnemyDiscard],
                 userScore:0,
-                enemyScore:10}
+                enemyScore:0}
             break;
-
+        
         case 'GAME_OVER':
             return {...state, 
                 userVictory:action.userVictory, 
@@ -133,7 +161,8 @@ export const reducer = (state, action) => {
                 userReactors: 2,
                 enemyReactors: 2,
                 gameOn:false,
-                userDiscard:[]}
+                userDiscard:[],
+                enemyDiscard:[]}
             break;
 
         default:

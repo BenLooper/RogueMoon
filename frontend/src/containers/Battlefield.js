@@ -39,7 +39,7 @@ function Battlefield() {
 
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{enemyField.space}</Row>
+                    <Row className="card-tray">{enemyField.space.map(card => <UnitCard card={card} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
@@ -47,7 +47,7 @@ function Battlefield() {
                 <Col style={{ border: 'solid' }}>
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{enemyField.ground}</Row>
+                    <Row className="card-tray">{enemyField.ground.map(card => <UnitCard card={card} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
@@ -55,7 +55,7 @@ function Battlefield() {
                 <Col style={{ border: 'solid' }}>
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{enemyField.foot}</Row>
+                    <Row className="card-tray">{enemyField.foot.map(card => <UnitCard card={card} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
