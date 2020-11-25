@@ -24,11 +24,12 @@ Card.create(name:"Lunar Citizen", image:'https://picsum.photos/200/300', flavor_
 Card.create(name:"Jury rigged mining cart", image:'https://picsum.photos/200/300', flavor_text:"I can't believe this works", is_special:false, role:'ground', strength:4)
 Card.create(name:"Old Era Rover", image:'https://picsum.photos/200/300', flavor_text:"Hey, look what I found!", is_special:false, role:'ground', strength:4)
 Card.create(name:"Sheil", image:'https://picsum.photos/200/300', flavor_text:'REVOLUTION!', is_special:false, role:'foot', strength:5)
-Card.create(name:"Rachel the Rager", image:'https://picsum.photos/200/300', flavor_text:'Oh YEAH babyyy', is_special:false, role:'ground', strength:5)
+Card.create(name:"Rachel the Rager", image:'https://picsum.photos/200/300', flavor_text:'Oh YEAH baby', is_special:false, role:'ground', strength:5)
 Card.create(name:"Talon Frigate", image:'https://picsum.photos/200/300', flavor_text:"We FINALLY get to use these guns", is_special:false, role:'space', strength:6)
 Card.create(name:"ID XQYZ24", image:'https://picsum.photos/200/300', flavor_text:"You sure you know how to fly this thing?", is_special:false, role:'space', strength:6)
 Card.create(name:"Dr. Algo", image:'https://picsum.photos/200/300', flavor_text:"This is all my fault...", is_special:false, role:'foot', strength:5, ability:'spy')
 Card.create(name:"Freedom Fighter", image:'https://picsum.photos/200/300', flavor_text:'I hope I can put this on my resume', is_special:false, role:'foot', strength:2)
 Card.create(name:"Exosuit Miner", image:'https://picsum.photos/200/300', flavor_text:"I feel like a GOD", is_special:false, role:'foot', strength:5)
+Card.create(name:'Drew MoonWalker', image:'https://picsum.photos/200/300', flavor_text:"Do ya'll have any beer?", is_special:false, role:'foot', strength:10, ability:'mock')
 
 Card.all.each {|card| OwnedCard.create(user:ben, card:card)}

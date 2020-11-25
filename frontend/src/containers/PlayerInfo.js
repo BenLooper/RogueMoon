@@ -14,6 +14,7 @@ function PlayerInfo() {
 
     const userPass = useSelector((state) => state.userPass)
     const enemyPass = useSelector((state) => state.enemyPass)
+    const userTurn = useSelector((state) => state.userTurn)
 
     const userReactors = useSelector((state) => state.userReactors)
     const enemyReactors = useSelector((state) => state.enemyReactors)
@@ -21,7 +22,7 @@ function PlayerInfo() {
     const userVictory = useSelector((state) => state.userVictory)
 
     const hand = useSelector((state) => state.hand)
-
+    const enemyHand = useSelector((state) => state.enemyHand)
 
     const pass = () => {
         dispatch({ type: 'USER_PASS' })
@@ -39,31 +40,37 @@ function PlayerInfo() {
                 game_won: (userReactors > enemyReactors ? true : false)
             })
         })
-        .then(res => res.json())
-        .then((userInfo) => {dispatch({
-            type: 'GAME_OVER',
-            userVictory: userInfo.newGame.game_won,
-            games: userInfo.games
-            })  
-        })
+            .then(res => res.json())
+            .then((userInfo) => {
+                dispatch({
+                    type: 'GAME_OVER',
+                    userVictory: userInfo.newGame.game_won,
+                    games: userInfo.games
+                })
+            })
     }
 
     useEffect(() => {
-        if (userReactors === 0 || enemyReactors === 0){
+        if (userReactors === 0 || enemyReactors === 0) {
             createGame()
         }
-    }, [userReactors,enemyReactors])
+    }, [userReactors, enemyReactors])
 
     //Checks to see if both have passed and game isn't over 
-    //Because GAME_OVER changes these values, it'll run after game over :/ gotta fix that 
-    //We only want it to run if the ROUND is over
+    //So GAME_OVER is actually running AFTER these actions...probably because of the fetch
     useEffect(() => {
-        if (userPass && enemyPass && !(userReactors === 0 || enemyReactors === 0)){
-            console.log('I ran')
-            dispatch({type:'ROUND_OVER'})
-            dispatch({type:'RESET_BOARD'})
+        if (userPass && enemyPass) {
+            dispatch({ type: 'ROUND_OVER' })
+            dispatch({ type: 'RESET_BOARD' })
         }
-    }, [userPass,enemyPass])
+    }, [userPass, enemyPass])
+
+    useEffect(() => {
+        if (userTurn === false) {
+            dispatch({ type: 'ENEMY_PLAY' })
+            setTimeout(() => dispatch({ type: 'ENEMY_PASS' }), 2000)
+        }
+    }, [userTurn])
 
     return (
         <div>
@@ -71,11 +78,12 @@ function PlayerInfo() {
             <h1>Enemy Score: {enemyScore}</h1>
             <br></br>
             <h1>User cards in hand: {hand.length}</h1>
-            <h1>Enemy cards in hand: </h1>
+            <h1>Enemy cards in hand: {enemyHand.length}</h1>
             <br></br>
             <h1>User Reactors Left: {userReactors}</h1>
             <h1>Enemy Reactors Left: {enemyReactors}</h1>
             <br></br>
+            <h1>Turn: {userTurn ? 'User' : 'Enemy'}</h1>
             <h1>User Passed: {userPass ? 'Yes' : 'No'}</h1>
             <h1>Enemy Passed: {enemyPass ? 'Yes' : 'No'}</h1>
             <button onClick={pass}>Pass</button>
