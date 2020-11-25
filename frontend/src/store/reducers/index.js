@@ -4,12 +4,14 @@ export const initialState = {
     passwordInput: '',
     user: {},
     ownedCards: [],
-    token: '',
+    games: [],
 
     //gameboard
     gameOn: false,
     gameCards: [],
     hand: [],
+    userDiscard: [],
+    enemyDiscard: [],
     enemyField: {
         space: [],
         ground: [],
@@ -20,10 +22,20 @@ export const initialState = {
         ground: [],
         foot: []
     },
-    
+
     //scores 
     userScore:0,
-    enemyScore:0
+    enemyScore:10,
+
+    //passing
+    userPass: false,
+    enemyPass: true,
+
+    //reactors 
+    userReactors: 2,
+    enemyReactors: 2,
+
+    userVictory: null 
 }
 
 const rowScore = (array) => {
@@ -52,7 +64,7 @@ export const reducer = (state, action) => {
             break;
 
         case 'SET_USER':
-            return { ...state, user: action.user, token: action.token, ownedCards: action.ownedCards }
+            return { ...state, user: action.user, ownedCards: action.ownedCards, games: action.games }
             break;
 
         case 'SET_GAME_CARDS':
@@ -69,11 +81,59 @@ export const reducer = (state, action) => {
         case 'PLAY_CARD':
             //Possible change --> send over something to indicate whether it's the enemy or user 
             let role = action.role
+
+            //Remove the card from hand
             let updatedHand = state.hand.filter(card => card.id !== action.card.id)
+
+            //Update the row, then update the field with that row 
             let updatedRow = [...state.userField[role], action.card]
             let updatedField = { ...state.userField, [role]: updatedRow }
+
+            //Find the new total, including the added card
             let newTotal = newTotalScore(updatedField)
             return { ...state, userField: updatedField, hand: updatedHand, userScore: newTotal }
+            break;
+
+        case 'USER_PASS':
+            return {...state, userPass:true}
+            break;
+        
+        case 'ROUND_OVER':
+            if (state.userScore >= state.enemyScore){
+                return {...state, enemyReactors: (state.enemyReactors - 1)}
+            }
+            else if (state.userScore < state.enemyScore){
+                return {...state, userReactors: (state.userReactors - 1)}
+            }
+            break;
+        
+        case 'RESET_BOARD':
+            //This is super ugly but it works. We're setting the discard to everything in userField
+            //And then we're hardcoding in a clean new userField
+            let newDiscard = Object.values(state.userField).splice(0).flat();
+            let cleanUserField = {userField: {
+                space: [],
+                ground: [],
+                foot: []
+            }}
+            return {...state, 
+                userField:cleanUserField.userField, 
+                //This will need to set enemyPass to false as well (once and enemy can play)
+                userPass:false, 
+                userDiscard:newDiscard,
+                //reset scores, set to 10 to simulate game
+                userScore:0,
+                enemyScore:10}
+            break;
+
+        case 'GAME_OVER':
+            return {...state, 
+                userVictory:action.userVictory, 
+                games: action.games, 
+                userReactors: 2,
+                enemyReactors: 2,
+                gameOn:false,
+                userDiscard:[]}
             break;
 
         default:

@@ -7,9 +7,6 @@ import PlayerInfo from './PlayerInfo'
 import DeckInfo from './DeckInfo'
 
 function GameBoard() {
-    const token = useSelector((state) => state.token)
-
-    if (token) {
         return (
             <Container fluid >
                 <Row>
@@ -25,11 +22,6 @@ function GameBoard() {
                 </Row>
             </Container>
         )
-    }
-    else {
-        {history.push('/login')}
-        return null 
-    }
 }
 
 export default GameBoard;

@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :users
 
   post '/auth', to: 'auth#create'
+  get '/auth', to: 'auth#known'
 end
