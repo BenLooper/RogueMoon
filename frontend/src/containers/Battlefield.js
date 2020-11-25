@@ -8,8 +8,10 @@ function Battlefield() {
     const dispatch = useDispatch()
 
     const gameOn = useSelector((state) => state.gameOn)
+
     const enemyField = useSelector((state) => state.enemyField)
     const userField = useSelector((state) => state.userField)
+
     const hand = useSelector((state) => state.hand)
 
     //Set the stage...SET_GAME_CARDS will eventually be called in pre-game component
@@ -18,8 +20,8 @@ function Battlefield() {
             dispatch({ type: 'SET_GAME_CARDS' })
             dispatch({ type: 'SET_HAND' })
         }
-    })
-
+    }, [gameOn])
+    
     const rowScore = (array) => {
         let score = 0
         for (let i = 0; i < array.length; i++) {
