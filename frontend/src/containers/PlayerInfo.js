@@ -50,14 +50,15 @@ function PlayerInfo() {
             })
     }
 
+    //if one side's reactors are down, end the game 
     useEffect(() => {
         if (userReactors === 0 || enemyReactors === 0) {
             createGame()
         }
     }, [userReactors, enemyReactors])
 
-    //Checks to see if both have passed and game isn't over 
-    //So GAME_OVER is actually running AFTER these actions...probably because of the fetch
+    //Checks to see if both have passed 
+    //End game actually triggered by ROUND_OVER updating reactors 
     useEffect(() => {
         if (userPass && enemyPass) {
             dispatch({ type: 'ROUND_OVER' })
@@ -65,10 +66,15 @@ function PlayerInfo() {
         }
     }, [userPass, enemyPass])
 
+    //Runs enemy turn if user passes
     useEffect(() => {
         if (userTurn === false) {
-            dispatch({ type: 'ENEMY_PLAY' })
-            setTimeout(() => dispatch({ type: 'ENEMY_PASS' }), 2000)
+            let counter = Math.floor(Math.random() * (enemyHand.length) + 1)
+            while (counter > 0) {
+                dispatch({type:'ENEMY_PLAY'})
+                counter -= 1
+            }
+            setTimeout(() => dispatch({ type: 'ENEMY_PASS' }), 4000)
         }
     }, [userTurn])
 

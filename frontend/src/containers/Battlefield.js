@@ -8,20 +8,36 @@ function Battlefield() {
     const dispatch = useDispatch()
 
     const gameOn = useSelector((state) => state.gameOn)
+    const drawHands = useSelector((state) => state.drawHands)
 
     const enemyField = useSelector((state) => state.enemyField)
     const userField = useSelector((state) => state.userField)
 
-    const hand = useSelector((state) => state.hand)
+    const ownedCards = useSelector((state) => state.ownedCards)
 
-    //Set the stage...SET_GAME_CARDS will eventually be called in pre-game component
-    useEffect(() => {
-        if (gameOn == false) {
-            dispatch({ type: 'SET_GAME_CARDS' })
-            dispatch({ type: 'SET_HAND' })
+
+    const hand = useSelector((state) => state.hand)
+    const enemyHand = useSelector((state) => state.enemyHand)
+
+    const shuffle = (array) => {
+        let currentIndex = array.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
         }
-    }, [gameOn])
-    
+
+        return array;
+    }
+
     const rowScore = (array) => {
         let score = 0
         for (let i = 0; i < array.length; i++) {
@@ -29,6 +45,21 @@ function Battlefield() {
         }
         return score
     }
+
+    //Set the stage...SET_GAME_CARDS will eventually be called in pre-game component
+    useEffect(() => {
+        if (gameOn === false && drawHands === true) {
+            dispatch({ type: 'SET_HANDS' })
+        }
+        else if (gameOn === false) {
+            //in the future, this will shuffle selectedCards instead of ownedCards
+            //for some reason, these shuffle the exact same way 
+            let shuffledGameCards = shuffle(ownedCards)
+            let shuffledEnemyGameCards = shuffle(shuffledGameCards)
+            dispatch({ type: 'SET_GAME_CARDS', gameCards: shuffledGameCards, enemyGameCards: shuffledEnemyGameCards })
+        }
+    }, [gameOn, drawHands])
+
 
     return (
         //These rows populate with played cards
