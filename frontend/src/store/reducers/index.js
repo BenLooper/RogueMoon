@@ -8,6 +8,7 @@ export const initialState = {
 
     //gameboard
     gameOn: false,
+    drawHands: false,
     gameCards: [],
     enemyGameCards: [],
     hand: [],
@@ -17,17 +18,21 @@ export const initialState = {
     enemyField: {
         space: [],
         ground: [],
-        foot: []
+        foot: [],
+        env: [],
+        other: []
     },
     userField: {
         space: [],
         ground: [],
-        foot: []
+        foot: [],
+        env:[],
+        other:[]
     },
 
     //scores 
-    userScore:0,
-    enemyScore:0,
+    userScore: 0,
+    enemyScore: 0,
 
     //passing
     userTurn: true,
@@ -38,7 +43,7 @@ export const initialState = {
     userReactors: 2,
     enemyReactors: 2,
 
-    userVictory: null 
+    userVictory: null
 }
 
 const rowScore = (array) => {
@@ -55,6 +60,7 @@ const newTotalScore = (field) => {
     return total
 }
 
+
 export const reducer = (state, action) => {
     switch (action.type) {
 
@@ -67,19 +73,31 @@ export const reducer = (state, action) => {
             break;
 
         case 'SET_USER':
-            return { ...state, user: action.user, ownedCards: action.ownedCards, games: action.games, gameOn:false }
+            return { ...state, user: action.user, ownedCards: action.ownedCards, games: action.games, gameOn: false }
             break;
 
         case 'SET_GAME_CARDS':
-            //TODO -> Gets sent a list of chosen cards to set as gameCards from the selection screen
-            return { ...state, gameCards: state.ownedCards, enemyGameCards: state.ownedCards, gameOn: true }
+            //TODO -> Gets sent a list of chosen cards to set as gameCards from the selection screen            
+            return { ...state, gameCards: action.gameCards, enemyGameCards: action.enemyGameCards, drawHands: true }
             break;
 
-        case 'SET_HAND':
+        case 'SET_HANDS':
             //Separate from game cards because hand is drawn in the battlefield, not the selection screen
-            //TODO -> Hand is randomly drawn from gameCards
-            let hand = state.gameCards.slice(5, 10);
-            return { ...state, hand: hand , enemyHand: hand}
+
+            let newHand = state.gameCards.slice(0, 10)
+            let newEnemyHand = state.enemyGameCards.slice(0, 10)
+
+            let newGameCards = state.gameCards.filter(card => !(newHand.includes(card)))
+            let newEnemyGameCards = state.enemyGameCards.filter(card => !(newEnemyHand.includes(card)))
+            return {
+                ...state,
+                gameCards: newGameCards,
+                enemyGameCards: newEnemyGameCards,
+                hand: newHand,
+                enemyHand: newEnemyHand,
+                gameOn: true,
+                drawHands: false
+            }
             break;
 
         case 'PLAY_CARD':
@@ -97,11 +115,11 @@ export const reducer = (state, action) => {
             let newUserTotal = newTotalScore(updatedUserField)
             return { ...state, userField: updatedUserField, hand: updatedUserHand, userScore: newUserTotal }
             break;
-        
-        case 'ENEMY_PLAY':
-            //grab card and remove it from hand
-            let chosenCard = state.enemyHand.slice(0,1)[0]
 
+        case 'ENEMY_PLAY':
+
+            let chosenCard = state.enemyHand.slice(0, 1)[0]
+            console.log(chosenCard)
             let updatedEnemyHand = state.enemyHand.filter(card => card.id !== chosenCard.id)
 
             let updatedEnemyRow = [...state.enemyField[chosenCard.role], chosenCard]
@@ -112,57 +130,69 @@ export const reducer = (state, action) => {
             break;
 
         case 'ENEMY_PASS':
-            return {...state, enemyPass:true, userTurn: true}
+            return { ...state, enemyPass: true, userTurn: true }
             break;
 
         case 'USER_PASS':
-            return {...state, userPass:true, userTurn:false}
+            return { ...state, userPass: true, userTurn: false }
             break;
-        
+
         case 'ROUND_OVER':
-            if (state.userScore >= state.enemyScore){
-                return {...state, enemyReactors: (state.enemyReactors - 1)}
+            if (state.userScore >= state.enemyScore) {
+                return { ...state, enemyReactors: (state.enemyReactors - 1) }
             }
-            else if (state.userScore < state.enemyScore){
-                return {...state, userReactors: (state.userReactors - 1)}
+            else if (state.userScore < state.enemyScore) {
+                return { ...state, userReactors: (state.userReactors - 1) }
             }
             break;
-        
+
         case 'RESET_BOARD':
             //This is super ugly but it works. We're setting the discard to everything in userField
             //And then we're hardcoding in a clean new userField
             let newUserDiscard = Object.values(state.userField).splice(0).flat();
             let newEnemyDiscard = Object.values(state.enemyField).splice(0).flat();
-            let cleanUserField = {userField: {
-                space: [],
-                ground: [],
-                foot: []
-            }}
-            let cleanEnemyField = {enemyField: {
-                space: [],
-                ground: [],
-                foot: []
-            }}
-            return {...state, 
-                userField:cleanUserField.userField, 
-                enemyField:cleanEnemyField.enemyField,
-                userPass:false, 
-                enemyPass:false,
-                userDiscard:[...state.userDiscard,...newUserDiscard],
-                enemyDiscard:[...state.enemyDiscard,...newEnemyDiscard],
-                userScore:0,
-                enemyScore:0}
+            let cleanUserField = {
+                userField: {
+                    space: [],
+                    ground: [],
+                    foot: [],
+                    env:[],
+                    other:[]
+                }
+            }
+            let cleanEnemyField = {
+                enemyField: {
+                    space: [],
+                    ground: [],
+                    foot: [],
+                    env:[],
+                    other:[]
+                }
+            }
+            return {
+                ...state,
+                userField: cleanUserField.userField,
+                enemyField: cleanEnemyField.enemyField,
+                userPass: false,
+                enemyPass: false,
+                userDiscard: [...state.userDiscard, ...newUserDiscard],
+                enemyDiscard: [...state.enemyDiscard, ...newEnemyDiscard],
+                userScore: 0,
+                enemyScore: 0
+            }
             break;
-        
+
         case 'GAME_OVER':
-            return {...state, 
-                userVictory:action.userVictory, 
-                games: action.games, 
+            return {
+                ...state,
+                userVictory: action.userVictory,
+                games: action.games,
                 userReactors: 2,
                 enemyReactors: 2,
-                gameOn:false,
-                userDiscard:[],
-                enemyDiscard:[]}
+                gameOn: false,
+                userDiscard: [],
+                enemyDiscard: []
+            }
             break;
 
         default:
