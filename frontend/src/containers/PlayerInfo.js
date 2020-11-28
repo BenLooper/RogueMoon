@@ -1,6 +1,7 @@
 import { Container, Row, Col } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
+import UnitCard from '../components/UnitCard.js'
 
 function PlayerInfo() {
 
@@ -24,6 +25,10 @@ function PlayerInfo() {
     const hand = useSelector((state) => state.hand)
     const enemyHand = useSelector((state) => state.enemyHand)
 
+    const userField = useSelector((state) => state.userField)
+    const enemyField = useSelector((state) => state.enemyField)
+    const env = useSelector((state) => state.env)
+    
     const pass = () => {
         dispatch({ type: 'USER_PASS' })
     }
@@ -89,6 +94,13 @@ function PlayerInfo() {
             <h1>User Reactors Left: {userReactors}</h1>
             <h1>Enemy Reactors Left: {enemyReactors}</h1>
             <br></br>
+            <Container>
+                <Row>
+                    <Col>
+                        <Row className="card-tray">{env.map(card => <UnitCard card={card} key={card.id} />)} </Row>
+                    </Col>
+                </Row>
+            </Container>
             <h1>Turn: {userTurn ? 'User' : 'Enemy'}</h1>
             <h1>User Passed: {userPass ? 'Yes' : 'No'}</h1>
             <h1>Enemy Passed: {enemyPass ? 'Yes' : 'No'}</h1>

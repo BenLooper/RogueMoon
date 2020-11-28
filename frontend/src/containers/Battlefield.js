@@ -12,6 +12,7 @@ function Battlefield() {
 
     const enemyField = useSelector((state) => state.enemyField)
     const userField = useSelector((state) => state.userField)
+    const env = useSelector((state) => state.env)
 
     const ownedCards = useSelector((state) => state.ownedCards)
 
@@ -64,29 +65,31 @@ function Battlefield() {
     return (
         //These rows populate with played cards
         //Furthest left is total strength, then active buff, then cards
-        <Container >
+        <Container > 
             <Row>
                 <Col style={{ border: 'solid' }}>
-
+                    {rowScore(enemyField.space)}
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{enemyField.space.map(card => <UnitCard card={card} key={card.id} />)}</Row>
-                </Col>
-
-            </Row>
-            <Row>
-                <Col style={{ border: 'solid' }}>
-                </Col>
-                <Col xs={10}>
-                    <Row className="card-tray">{enemyField.ground.map(card => <UnitCard card={card} key={card.id} />)}</Row>
+                    <Row className="card-tray">{enemyField.space.map(card => <UnitCard card={card} env={env} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
             <Row>
                 <Col style={{ border: 'solid' }}>
+                    {rowScore(enemyField.ground)}
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{enemyField.foot.map(card => <UnitCard card={card} key={card.id} />)}</Row>
+                    <Row className="card-tray">{enemyField.ground.map(card => <UnitCard card={card} env={env} key={card.id} />)}</Row>
+                </Col>
+
+            </Row>
+            <Row>
+                <Col style={{ border: 'solid' }}>
+                    {rowScore(enemyField.foot)}
+                </Col>
+                <Col xs={10}>
+                    <Row className="card-tray">{enemyField.foot.map(card => <UnitCard card={card} env={env} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
@@ -96,7 +99,7 @@ function Battlefield() {
                     {rowScore(userField.foot)}
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{userField.foot.map(card => <UnitCard card={card} key={card.id} />)}</Row>
+                    <Row className="card-tray">{userField.foot.map(card => <UnitCard card={card} env={env} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
@@ -105,7 +108,7 @@ function Battlefield() {
                     {rowScore(userField.ground)}
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{userField.ground.map(card => <UnitCard card={card} key={card.id} />)}</Row>
+                    <Row className="card-tray">{userField.ground.map(card => <UnitCard card={card} env={env} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
@@ -114,7 +117,7 @@ function Battlefield() {
                     {rowScore(userField.space)}
                 </Col>
                 <Col xs={10}>
-                    <Row className="card-tray">{userField.space.map(card => <UnitCard card={card} key={card.id} />)}</Row>
+                    <Row className="card-tray">{userField.space.map(card => <UnitCard card={card} env={env} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
