@@ -19,16 +19,15 @@ export const initialState = {
         space: [],
         ground: [],
         foot: [],
-        env: [],
         other: []
     },
     userField: {
         space: [],
         ground: [],
         foot: [],
-        env:[],
-        other:[]
+        other: []
     },
+    env: [],
 
     //scores 
     userScore: 0,
@@ -77,7 +76,7 @@ export const reducer = (state, action) => {
             break;
 
         case 'SET_GAME_CARDS':
-            //TODO -> Gets sent a list of chosen cards to set as gameCards from the selection screen            
+            //TODO -> Gets sent a list of chosen cards to set as gameCards from the selection screen    
             return { ...state, gameCards: action.gameCards, enemyGameCards: action.enemyGameCards, drawHands: true }
             break;
 
@@ -107,7 +106,7 @@ export const reducer = (state, action) => {
             //Remove the card from hand
             let updatedUserHand = state.hand.filter(card => card.id !== action.card.id)
 
-            //Update the row, then update the field with that row 
+            //Update the row, then update the field with that updated row 
             let updatedUserRow = [...state.userField[role], action.card]
             let updatedUserField = { ...state.userField, [role]: updatedUserRow }
 
@@ -116,17 +115,54 @@ export const reducer = (state, action) => {
             return { ...state, userField: updatedUserField, hand: updatedUserHand, userScore: newUserTotal }
             break;
 
+        case 'PLAY_ENV':
+
+            //check to see if env already has that condition
+            let conditions = state.env.map(card => card.ability)
+            if (conditions.includes(action.card.ability)) {
+                return {
+                    ...state,
+                    userDiscard: [...state.userDiscard, action.card],
+                    hand: state.hand.filter(card => card.id !== action.card.id)
+                }
+            }
+            else {
+                return {
+                    ...state,
+                    env: [...state.env, action.card],
+                    hand: state.hand.filter(card => card.id !== action.card.id)
+                }
+            }
+
         case 'ENEMY_PLAY':
-
             let chosenCard = state.enemyHand.slice(0, 1)[0]
-            console.log(chosenCard)
-            let updatedEnemyHand = state.enemyHand.filter(card => card.id !== chosenCard.id)
 
-            let updatedEnemyRow = [...state.enemyField[chosenCard.role], chosenCard]
-            let updatedEnemyField = { ...state.enemyField, [chosenCard.role]: updatedEnemyRow }
+            if (chosenCard.role === 'env') {
+                let conditions = state.env.map(card => card.ability)
+                if (conditions.includes(chosenCard.ability)) {
+                    return {
+                        ...state,
+                        enemyDiscard: [...state.enemyDiscard, chosenCard],
+                        enemyHand: state.enemyHand.filter(card => card.id !== chosenCard.id)
+                    }
+                }
+                else {
+                    return {
+                        ...state,
+                        env: [...state.env, chosenCard],
+                        enemyHand: state.enemyHand.filter(card => card.id !== chosenCard.id)
+                    }
+                }
+            }
+            else {
+                let updatedEnemyHand = state.enemyHand.filter(card => card.id !== chosenCard.id)
 
-            let newEnemyTotal = newTotalScore(updatedEnemyField)
-            return { ...state, enemyField: updatedEnemyField, enemyHand: updatedEnemyHand, enemyScore: newEnemyTotal }
+                let updatedEnemyRow = [...state.enemyField[chosenCard.role], chosenCard]
+                let updatedEnemyField = { ...state.enemyField, [chosenCard.role]: updatedEnemyRow }
+
+                let newEnemyTotal = newTotalScore(updatedEnemyField)
+                return { ...state, enemyField: updatedEnemyField, enemyHand: updatedEnemyHand, enemyScore: newEnemyTotal }
+            }
             break;
 
         case 'ENEMY_PASS':
@@ -148,7 +184,7 @@ export const reducer = (state, action) => {
 
         case 'RESET_BOARD':
             //This is super ugly but it works. We're setting the discard to everything in userField
-            //And then we're hardcoding in a clean new userField
+            //And then we're hardcoding in new clean fields
             let newUserDiscard = Object.values(state.userField).splice(0).flat();
             let newEnemyDiscard = Object.values(state.enemyField).splice(0).flat();
             let cleanUserField = {
@@ -156,8 +192,7 @@ export const reducer = (state, action) => {
                     space: [],
                     ground: [],
                     foot: [],
-                    env:[],
-                    other:[]
+                    other: []
                 }
             }
             let cleanEnemyField = {
@@ -165,8 +200,7 @@ export const reducer = (state, action) => {
                     space: [],
                     ground: [],
                     foot: [],
-                    env:[],
-                    other:[]
+                    other: []
                 }
             }
             return {
@@ -189,11 +223,75 @@ export const reducer = (state, action) => {
                 games: action.games,
                 userReactors: 2,
                 enemyReactors: 2,
+                env:[],
                 gameOn: false,
                 userDiscard: [],
                 enemyDiscard: []
             }
             break;
+
+        // ABILITIES 
+
+        case 'DEVELOP':
+            //clear env of cards, which then causes cards to return to their OG strengths
+            return {...state, env:[]}
+            break;
+
+        case 'COLD':
+            //change a card's strength to 1 if it's in the field, in the foot row 
+            let coldRow = state.userField.foot.map(card => {
+                if (card.id === action.card.id) {
+                    card.strength = 1
+                };
+                return card
+            })
+            let coldEnemyRow = state.enemyField.foot.map(card => {
+                if (card.id === action.card.id) {
+                    card.strength = 1
+                };
+                return card
+            })
+            let coldUserField = { ...state.userField, foot: coldRow }
+            let coldEnemyField = { ...state.enemyField, foot: coldEnemyRow }
+
+            return { ...state, userField: coldUserField, enemyField: coldEnemyField, userScore: newTotalScore(coldUserField), enemyScore: newTotalScore(coldEnemyField) }
+            break;
+
+        case 'ROCKY':
+            let rockyRow = state.userField.ground.map(card => {
+                if (card.id === action.card.id) {
+                    card.strength = 1
+                };
+                return card
+            })
+            let rockyEnemyRow = state.enemyField.ground.map(card => {
+                if (card.id === action.card.id) {
+                    card.strength = 1
+                };
+                return card
+            })
+            let rockyUserField = { ...state.userField, ground: rockyRow }
+            let rockyEnemyField = { ...state.enemyField, ground: rockyEnemyRow }
+
+            return { ...state, userField: rockyUserField, enemyField: rockyEnemyField, userScore: newTotalScore(rockyUserField), enemyScore: newTotalScore(rockyEnemyField) }
+
+        case 'FLARE':
+            let flareRow = state.userField.space.map(card => {
+                if (card.id === action.card.id) {
+                    card.strength = 1
+                };
+                return card
+            })
+            let flareEnemyRow = state.enemyField.space.map(card => {
+                if (card.id === action.card.id) {
+                    card.strength = 1
+                };
+                return card
+            })
+            let flareUserField = { ...state.userField, space: flareRow }
+            let flareEnemyField = { ...state.enemyField, space: flareEnemyRow }
+
+            return { ...state, userField: flareUserField, enemyField: flareEnemyField, userScore: newTotalScore(flareUserField), enemyScore: newTotalScore(flareEnemyField) }
 
         default:
             return state
