@@ -1,12 +1,12 @@
 import { Card } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const UnitCard = ({ card, hand }) => {
 
     const dispatch = useDispatch()
     const env = useSelector((state) => state.env)
-    let oldStrength = card.strength
+    const [oldStrength] = useState(card.strength)
 
     const playCard = () => {
         let role = card.role
@@ -18,33 +18,30 @@ const UnitCard = ({ card, hand }) => {
             //puts the card in the correct array inside field 
             dispatch({ type: "PLAY_CARD", role: role, card: card })
         }
-        //if a card has an ability, dispatch that ability 
-        // if (card.ability) {
-        //     dispatch({ type: card.ability.toUpperCase() })
-        // }
     }
+
 
     useEffect(() => {
         //Cards look at env. When it changes, they run the corresponding action 
         //if they're in the field, their strength is reduced accordingly
         //if there isn't anything 
-        let conditions = env.map(card => card.ability)
-        if ((card.role === 'foot') && (conditions.includes('cold'))) {
-            dispatch({type:"COLD", card:card})
+        if (!hand && !(card.role === 'env')) {
+            let conditions = env.map(card => card.ability)
+            if (conditions.includes('develop')) {
+                dispatch({ type: 'DEVELOP', card: card, oldStrength: oldStrength })
+            }
+            else if ((card.role === 'foot') && (conditions.includes('cold'))) {
+                dispatch({ type: "COLD", card: card })
+            }
+            else if ((card.role === 'ground') && (conditions.includes('rocky'))) {
+                dispatch({ type: 'ROCKY', card: card })
+            }
+            else if ((card.role === 'space') && (conditions.includes('flare'))) {
+                dispatch({ type: 'FLARE', card: card })
+            }
         }
-        else if ((card.role === 'ground') && (conditions.includes('rocky'))) {
-            dispatch({type:'ROCKY', card:card})
-        }
-        else if ((card.role === 'space') && (conditions.includes('flare'))) {
-            dispatch({type:'FLARE', card:card})
-        }
-        else if (conditions.includes('develop')){
-            dispatch({type:'DEVELOP'})
-        }
-        else {
-            card.strength = oldStrength
-        }
-    },[env])
+    }, [env])
+
 
     return (
         <Card className="unit-card" onClick={hand ? () => playCard() : null}>
