@@ -223,7 +223,7 @@ export const reducer = (state, action) => {
                 games: action.games,
                 userReactors: 2,
                 enemyReactors: 2,
-                env:[],
+                env: [],
                 gameOn: false,
                 userDiscard: [],
                 enemyDiscard: []
@@ -233,8 +233,55 @@ export const reducer = (state, action) => {
         // ABILITIES 
 
         case 'DEVELOP':
-            //clear env of cards, which then causes cards to return to their OG strengths
-            return {...state, env:[]}
+            let developedUserFoot = state.userField.foot.map(card => {
+                if (card.id === action.card.id) {
+                    console.log(card)
+                    card.strength = action.oldStrength
+                    console.log(card)
+                };
+                console.log(card)
+                return card
+            })
+            console.log(developedUserFoot)
+            let developedUserGround = state.userField.ground.map(card => {
+                if (card.id === action.card.id) {
+                    console.log(card)
+                    card.strength = action.oldStrength
+                };
+                console.log(card)
+                return card
+            })
+            let developedUserSpace = state.userField.space.map(card => {
+                if (card.id === action.card.id) {
+                    console.log(card)
+                    card.strength = action.oldStrength
+                };
+                console.log(card)
+                return card
+            })
+            let developedEnemyFoot = state.enemyField.foot.map(card => {
+                if (card.id === action.card.id) {
+                    card.strength = action.oldStrength
+                };
+                return card
+            })
+            let developedEnemyGround = state.enemyField.ground.map(card => {
+                if (card.id === action.card.id) {
+                    card.strength = action.oldStrength
+                };
+                return card
+            })
+            let developedEnemySpace = state.enemyField.space.map(card => {
+                if (card.id === action.card.id) {
+                    card.strength = action.oldStrength
+                };
+                return card
+            })
+
+            let developedUserField = { ...state.userField, foot: developedUserFoot, ground: developedUserGround, space: developedUserSpace }
+            let developedEnemyField = { ...state.enemyField, foot: developedEnemyFoot, ground: developedEnemyGround, space: developedEnemySpace }
+            console.log(developedUserField)
+            return { ...state, env: [], userField: developedUserField, enemyField: developedEnemyField }
             break;
 
         case 'COLD':
