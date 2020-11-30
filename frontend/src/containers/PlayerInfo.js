@@ -28,9 +28,10 @@ function PlayerInfo() {
     const userField = useSelector((state) => state.userField)
     const enemyField = useSelector((state) => state.enemyField)
     const env = useSelector((state) => state.env)
-    
+
     const pass = () => {
         dispatch({ type: 'USER_PASS' })
+        dispatch({ type: 'END_TURN' })
     }
 
     const createGame = () => {
@@ -71,17 +72,26 @@ function PlayerInfo() {
         }
     }, [userPass, enemyPass])
 
-    //Runs enemy turn if user passes
+    //Runs enemy turn after user plays a card / passes 
     useEffect(() => {
-        if (userTurn === false) {
-            let counter = Math.floor(Math.random() * (enemyHand.length) + 1)
-            while (counter > 0) {
-                dispatch({type:'ENEMY_PLAY'})
-                counter -= 1
-            }
-            setTimeout(() => dispatch({ type: 'ENEMY_PASS' }), 4000)
+        //this prevents him playing before hands are set
+        if (gameOn && enemyHand.length === 0) {
+            dispatch({ type: 'ENEMY_PASS' })
         }
-    }, [userTurn])
+        //if it's his turn and he's passed, he ends his turn 
+        else if (userTurn === false && enemyPass) {
+            dispatch({ type: 'END_TURN' })
+        }
+        //if I've passed and it's my turn, it goes back to him
+        else if (userTurn === true && userPass === true) {
+            dispatch({ type: 'END_TURN' })
+        }
+        //if I've passed or played and it's his turn (and he hasn't passed), he plays a card
+        else if ((userTurn === false || userPass === true) && !(enemyPass)) {
+            setTimeout(() => dispatch({ type: 'ENEMY_PLAY' }), 1000)
+            if (enemyHand.length >= 1) { setTimeout(() => dispatch({ type: 'END_TURN' }), 2000) }
+        }
+    }, [userTurn, enemyPass])
 
     return (
         <div>
