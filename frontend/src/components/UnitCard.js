@@ -7,7 +7,7 @@ const UnitCard = ({ card, hand, userField, enemyField }) => {
     const dispatch = useDispatch()
     const env = useSelector((state) => state.env)
     const userTurn = useSelector((state) => state.userTurn)
-    const [oldStrength] = useState(card.strength)
+    const oldStrength = useState(card.strength)
 
     const playCard = () => {
         let role = card.role
@@ -27,10 +27,10 @@ const UnitCard = ({ card, hand, userField, enemyField }) => {
     useEffect(() => {
         //Cards look at env. When it changes, they run the corresponding action 
         //if they're in the field and not an env card, their strength is reduced accordingly
-        if ((userField === true || userField === false) && !(card.role === 'env')) {
+        if ((userField === true || userField === false) && !(card.is_special)) {
             let conditions = env.map(card => card.ability)
             if (conditions.includes('develop')) {
-                dispatch({ type: 'DEVELOP', card: card, oldStrength: oldStrength, userField:userField?true:false })
+                dispatch({ type: 'DEVELOP', card: card, oldStrength: oldStrength[0], userField:userField?true:false })
             }
             else if ((card.role === 'foot') && (conditions.includes('cold'))) {
                 dispatch({ type: "COLD", card: card })
@@ -40,6 +40,12 @@ const UnitCard = ({ card, hand, userField, enemyField }) => {
             }
             else if ((card.role === 'space') && (conditions.includes('flare'))) {
                 dispatch({ type: 'FLARE', card: card })
+            }
+        }
+        if (hand && !(card.role === 'env')) {
+            let conditions = env.map(card => card.ability)
+            if (conditions.includes('develop')) {
+                dispatch({ type: 'DEVELOP', card: card, oldStrength: oldStrength[0], userField:userField?true:false })
             }
         }
     }, [env])

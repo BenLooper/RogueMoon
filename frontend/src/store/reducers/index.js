@@ -140,13 +140,11 @@ export const reducer = (state, action) => {
                 chosenCard = state.enemyHand[randomCard]
             }
             else {
-                console.log(state.userScore, state.enemyScore)
                 if (state.userScore >= state.enemyScore) {
                     chosenCard = state.enemyHand[0]
                 }
                 else {
-                    console.log('where am I?')
-                    return { ...state, enemyPass:true}
+                    return { ...state, enemyPass: true }
                 }
             }
 
@@ -174,7 +172,7 @@ export const reducer = (state, action) => {
                 let updatedEnemyField = { ...state.enemyField, [chosenCard.role]: updatedEnemyRow }
 
                 let newEnemyTotal = newTotalScore(updatedEnemyField)
-                return { ...state, enemyField: updatedEnemyField, enemyHand: updatedEnemyHand, enemyScore: newEnemyTotal}
+                return { ...state, enemyField: updatedEnemyField, enemyHand: updatedEnemyHand, enemyScore: newEnemyTotal }
             }
             break;
 
@@ -190,6 +188,7 @@ export const reducer = (state, action) => {
             return { ...state, userTurn: !(state.userTurn) }
 
         case 'ROUND_OVER':
+            let develop = state.gameCards.filter(card => card.ability === 'develop')
             if (state.userScore >= state.enemyScore) {
                 return { ...state, enemyReactors: (state.enemyReactors - 1) }
             }
@@ -230,7 +229,8 @@ export const reducer = (state, action) => {
                 userDiscard: [...state.userDiscard, ...newUserDiscard],
                 enemyDiscard: [...state.enemyDiscard, ...newEnemyDiscard],
                 userScore: 0,
-                enemyScore: 0
+                enemyScore: 0,
+                roundOver: !(state.roundOver)
             }
             break;
 
@@ -243,6 +243,8 @@ export const reducer = (state, action) => {
                 enemyReactors: 2,
                 env: [],
                 gameOn: false,
+                userPass: false,
+                enemyPass: false,
                 userDiscard: [],
                 enemyDiscard: []
             }
@@ -251,38 +253,42 @@ export const reducer = (state, action) => {
         // ABILITIES 
 
         case 'DEVELOP':
+            console.log(action.userField)
+            console.log(action.oldStrength)
             let developedUserFoot = state.userField.foot.map(card => {
-                if (card.id === action.card.id && (action.userField)) {
+                if (card.id === action.card.id) {
+                    console.log(card.strength, action.oldStrength)
                     card.strength = action.oldStrength
+                    console.log(card.strength, action.oldStrength)
                 };
                 return card
             })
             let developedUserGround = state.userField.ground.map(card => {
-                if (card.id === action.card.id && (action.userField)) {
+                if (card.id === action.card.id) {
                     card.strength = action.oldStrength
                 };
                 return card
             })
             let developedUserSpace = state.userField.space.map(card => {
-                if (card.id === action.card.id && (action.userField)) {
+                if (card.id === action.card.id) {
                     card.strength = action.oldStrength
                 };
                 return card
             })
             let developedEnemyFoot = state.enemyField.foot.map(card => {
-                if (card.id === action.card.id && !(action.userField)) {
+                if (card.id === action.card.id ) {
                     card.strength = action.oldStrength
                 };
                 return card
             })
             let developedEnemyGround = state.enemyField.ground.map(card => {
-                if (card.id === action.card.id && !(action.userField)) {
+                if (card.id === action.card.id ) {
                     card.strength = action.oldStrength
                 };
                 return card
             })
             let developedEnemySpace = state.enemyField.space.map(card => {
-                if (card.id === action.card.id && !(action.userField)) {
+                if (card.id === action.card.id ) {
                     card.strength = action.oldStrength
                 };
                 return card
