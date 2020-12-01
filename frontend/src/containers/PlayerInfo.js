@@ -9,6 +9,7 @@ function PlayerInfo() {
 
     const games = useSelector((state) => state.games)
     const gameOn = useSelector((state) => state.gameOn)
+    const gameStart = useSelector((state) => state.gameStart)
 
     const userScore = useSelector((state) => state.userScore)
     const enemyScore = useSelector((state) => state.enemyScore)
@@ -71,20 +72,28 @@ function PlayerInfo() {
             dispatch({ type: 'RESET_BOARD' })
         }
     }, [userPass, enemyPass])
-
     //Runs enemy turn after user plays a card / passes 
     useEffect(() => {
         //this prevents him playing before hands are set
-        if (gameOn && enemyHand.length === 0) {
+        if (gameStart && enemyHand.length === 0) {
             dispatch({ type: 'ENEMY_PASS' })
         }
         //if it's his turn and he's passed, he ends his turn 
-        else if (userTurn === false && enemyPass) {
+        else if (userTurn === false && enemyPass && !(userPass)) {
             dispatch({ type: 'END_TURN' })
         }
         //if I've passed and it's my turn, it goes back to him
-        else if (userTurn === true && userPass === true) {
+        else if (userTurn === true && userPass === true && !(enemyPass) && !(userTurn)) {
             dispatch({ type: 'END_TURN' })
+        }
+        else if (userPass && (userScore < enemyScore) && !(enemyPass)){
+            dispatch({ type: 'ENEMY_PASS' })
+        }
+        else if ((hand.length > enemyHand.length) && (userScore > (enemyScore + 5) && !(enemyPass) && !(userTurn))){
+            dispatch({ type: 'ENEMY_PASS' })
+        }
+        else if ((enemyScore + 10) < userScore && !(enemyPass)){
+            dispatch({ type: 'ENEMY_PASS' })
         }
         //if I've passed or played and it's his turn (and he hasn't passed), he plays a card
         else if ((userTurn === false || userPass === true) && !(enemyPass)) {

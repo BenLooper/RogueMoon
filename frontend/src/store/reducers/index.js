@@ -8,6 +8,7 @@ export const initialState = {
 
     //gameboard
     gameOn: false,
+    gameStart: false,
     drawHands: false,
     gameCards: [],
     enemyGameCards: [],
@@ -72,12 +73,19 @@ export const reducer = (state, action) => {
             break;
 
         case 'SET_USER':
-            return { ...state, user: action.user, ownedCards: action.ownedCards, games: action.games, gameOn: false }
+            return { ...state, user: action.user, ownedCards: action.ownedCards, games: action.games}
             break;
 
+        case 'START_GAME':
+            return{...state, gameOn:true}
+            break; 
+
         case 'SET_GAME_CARDS':
-            //TODO -> Gets sent a list of chosen cards to set as gameCards from the selection screen    
-            return { ...state, gameCards: action.gameCards, enemyGameCards: action.enemyGameCards, drawHands: true }
+            return{...state, gameCards: action.gameCards}
+            break;
+
+        case 'SET_ENEMY_GAME_CARDS':
+            return { ...state, enemyGameCards: action.enemyGameCards, drawHands: true }
             break;
 
         case 'SET_HANDS':
@@ -90,11 +98,11 @@ export const reducer = (state, action) => {
             let newEnemyGameCards = state.enemyGameCards.filter(card => !(newEnemyHand.includes(card)))
             return {
                 ...state,
+                gameStart:true,
                 gameCards: newGameCards,
                 enemyGameCards: newEnemyGameCards,
                 hand: newHand,
                 enemyHand: newEnemyHand,
-                gameOn: true,
                 drawHands: false
             }
             break;
@@ -188,12 +196,11 @@ export const reducer = (state, action) => {
             return { ...state, userTurn: !(state.userTurn) }
 
         case 'ROUND_OVER':
-            let develop = state.gameCards.filter(card => card.ability === 'develop')
             if (state.userScore >= state.enemyScore) {
-                return { ...state, enemyReactors: (state.enemyReactors - 1) }
+                return { ...state, enemyReactors: (state.enemyReactors - 1)}
             }
             else if (state.userScore < state.enemyScore) {
-                return { ...state, userReactors: (state.userReactors - 1) }
+                return { ...state, userReactors: (state.userReactors - 1)}
             }
             break;
 
@@ -229,8 +236,7 @@ export const reducer = (state, action) => {
                 userDiscard: [...state.userDiscard, ...newUserDiscard],
                 enemyDiscard: [...state.enemyDiscard, ...newEnemyDiscard],
                 userScore: 0,
-                enemyScore: 0,
-                roundOver: !(state.roundOver)
+                enemyScore: 0
             }
             break;
 
@@ -243,6 +249,7 @@ export const reducer = (state, action) => {
                 enemyReactors: 2,
                 env: [],
                 gameOn: false,
+                gameStart:false,
                 userPass: false,
                 enemyPass: false,
                 userDiscard: [],
@@ -276,19 +283,19 @@ export const reducer = (state, action) => {
                 return card
             })
             let developedEnemyFoot = state.enemyField.foot.map(card => {
-                if (card.id === action.card.id ) {
+                if (card.id === action.card.id) {
                     card.strength = action.oldStrength
                 };
                 return card
             })
             let developedEnemyGround = state.enemyField.ground.map(card => {
-                if (card.id === action.card.id ) {
+                if (card.id === action.card.id) {
                     card.strength = action.oldStrength
                 };
                 return card
             })
             let developedEnemySpace = state.enemyField.space.map(card => {
-                if (card.id === action.card.id ) {
+                if (card.id === action.card.id) {
                     card.strength = action.oldStrength
                 };
                 return card

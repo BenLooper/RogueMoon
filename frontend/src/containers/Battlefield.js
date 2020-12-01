@@ -46,26 +46,24 @@ function Battlefield() {
         }
         return score
     }
-
-    //Set the stage...SET_GAME_CARDS will eventually be called in pre-game component
+    
+    //On mount, set the game cards and setHands to true 
     useEffect(() => {
-        if (gameOn === false && drawHands === true) {
+        let shuffledEnemyGameCards = shuffle(ownedCards)
+        dispatch({ type: 'SET_ENEMY_GAME_CARDS', enemyGameCards: shuffledEnemyGameCards })
+    }, [])
+
+    useEffect(() => {
+        if (gameOn === true && drawHands === true) {
             dispatch({ type: 'SET_HANDS' })
         }
-        else if (gameOn === false) {
-            //in the future, this will shuffle selectedCards instead of ownedCards
-            //for some reason, these shuffle the exact same way 
-            let shuffledGameCards = shuffle(ownedCards)
-            let shuffledEnemyGameCards = shuffle(shuffledGameCards)
-            dispatch({ type: 'SET_GAME_CARDS', gameCards: shuffledGameCards, enemyGameCards: shuffledEnemyGameCards })
-        }
-    }, [gameOn, drawHands])
+    }, [drawHands])
 
 
     return (
         //These rows populate with played cards
         //Furthest left is total strength, then active buff, then cards
-        <Container > 
+        <Container >
             <Row>
                 <Col style={{ border: 'solid' }}>
                     {rowScore(enemyField.space)}
