@@ -37,6 +37,8 @@
   }
 }
 
+
+
 /* Trays */
 .card-tray{
   height: 130px ;
@@ -46,25 +48,40 @@
 }
 
 /* Card */
-.unit-card{
+.card-unit {
   height:100%;
   width:100px;
+  justify-content: center;
+  transform: scale(1.0);
+  transition-duration: .4s;
 }
 
-.card-img-top{
-  width: 100%;
+.card-unit:hover {
+  transform: scale(1.2);
+  transition-duration: .5s;
+  border-color: green;
+  z-index: 2;
+}
+
+
+.card-content {
+  padding: 12px;
+}
+
+.card-img{
+  width: 98%;
   max-height: 100%;
 }
 
 .strength{
   color: red;
-}
-
-.role{
-  color: red;
-}
-
-.ability{
-  color:red;
-  font-size:8px;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: solid; 
+  border-width: 2px;
+  border-color: red;
+  margin-top: 8px;
+  margin-left: 1px;
+  text-align: center;
 }

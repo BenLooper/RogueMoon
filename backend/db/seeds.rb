@@ -4,12 +4,12 @@ OwnedCard.destroy_all
 
 ben = User.create(username:'Ben', password:'asdf')
 
-Card.create(name:'Develop',	image:'https://picsum.photos/200/300', flavor_text:'Level the playing field', is_special: true, role:'env', strength:0, ability:'develop')
+Card.create(name:'Develop',	image:'https://opengameart.org/sites/default/files/styles/medium/public/coruscant_by_night_by_jfliesenborghs-d93rhyn_500.jpg', flavor_text:'Level the playing field', is_special: true, role:'env', strength:0, ability:'develop')
 Card.create(name:'Cold of Space', image:'https://picsum.photos/200/300', flavor_text:'So cold...', is_special:true, role:'env', strength:0, ability:'cold')
 Card.create(name:"Rocky Terrain", image:'https://picsum.photos/200/300', flavor_text:"Too many rocks!", is_special:true, role:'env', strength:0, ability:'rocky')
 Card.create(name:"Solar Flare", image:'https://picsum.photos/200/300', flavor_text:"Solar Flare, get to the surface!", is_special:true, role:'env', strength:0, ability:'flare')
-Card.create(name:"Drone", image:'https://picsum.photos/200/300', flavor_text:"Stupid hunk of junk...", is_special:true, role:'other', strength:0, ability:'decoy')
-Card.create(name:"Talon Fighter", image:'https://picsum.photos/200/300', flavor_text:"It feels weird to shoot at the moon", is_special:false, role:'space',strength:6, ability:nil)
+Card.create(name:"Drone", image:'https://picsum.photos/200/300', flavor_text:"Stupid hunk of junk...", is_special:true, role:'foot', strength:0, ability:'decoy')
+Card.create(name:"Talon Fighter", image:'https://icon-library.com/images/pngtree-spacecraftspaceshipshipspacealien-line-icon--vector-isol-png-image_310939.jpg', flavor_text:"It feels weird to shoot at the moon", is_special:false, role:'space',strength:6, ability:nil)
 Card.create(name:"Space Marine", image:'https://picsum.photos/200/300', flavor_text:"Here I was thinking I'd end up in Hawaii", is_special:false, role:'foot', strength:4, ability:'close-combat')
 Card.create(name:"Talon Bomber", image:'https://picsum.photos/200/300', flavor_text:"Ok this feels a little unfair...", is_special:false, role:'space', strength:8, ability:'overwhelm')
 Card.create(name:"Talon Skiff", image:'https://picsum.photos/200/300', flavor_text:"They won't even see us coming", is_special:false, role:'ground', strength:5, ability:'overwhelm')
