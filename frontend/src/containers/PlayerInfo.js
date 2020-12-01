@@ -115,7 +115,7 @@ function PlayerInfo() {
             <h1>User Passed: {userPass ? 'Yes' : 'No'}</h1>
             <h1>Enemy Passed: {enemyPass ? 'Yes' : 'No'}</h1>
             <button onClick={pass}>Pass</button>
-            <h1>Games Played: {games.length}</h1>
+            {/* <h1>Games Played: {games.length}</h1> */}
             <h1>GAME WINNER: {userVictory && userVictory !== null ? 'User' : 'Enemy'}</h1>
         </div>
     )
