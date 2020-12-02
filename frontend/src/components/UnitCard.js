@@ -15,6 +15,8 @@ const UnitCard = ({ card, hand, userField, enemyField }) => {
     const env = useSelector((state) => state.env)
     const userTurn = useSelector((state) => state.userTurn)
     const oldStrength = useState(card.strength)
+    const [color,setColor] = useState('green')
+
     let logo
     if (card.role == 'foot' || card.role == 'other') {
         logo = gun
@@ -57,23 +59,28 @@ const UnitCard = ({ card, hand, userField, enemyField }) => {
         //Cards look at env. When it changes, they run the corresponding action 
         //if they're in the field and not an env card, their strength is reduced accordingly
         if ((userField === true || userField === false) && !(card.is_special)) {
-            let conditions = env.map(card => card.ability)
-            if (conditions.includes('develop')) {
+            let currentConditions = env.map(card => card.ability)
+            if (currentConditions.includes('develop')) {
                 dispatch({ type: 'DEVELOP', card: card, oldStrength: oldStrength[0], userField: userField ? true : false })
+                setColor('green')
             }
-            else if ((card.role === 'foot') && (conditions.includes('cold'))) {
+            else if ((card.role === 'foot') && (currentConditions.includes('cold'))) {
+                console.log('hey')
                 dispatch({ type: "COLD", card: card })
+                setColor('red')
             }
-            else if ((card.role === 'ground') && (conditions.includes('rocky'))) {
+            else if ((card.role === 'ground') && (currentConditions.includes('rocky'))) {
                 dispatch({ type: 'ROCKY', card: card })
+                setColor('red')
             }
-            else if ((card.role === 'space') && (conditions.includes('flare'))) {
+            else if ((card.role === 'space') && (currentConditions.includes('flare'))) {
                 dispatch({ type: 'FLARE', card: card })
+                setColor('red')
             }
         }
         if (hand && !(card.role === 'env')) {
-            let conditions = env.map(card => card.ability)
-            if (conditions.includes('develop')) {
+            let currentConditions = env.map(card => card.ability)
+            if (currentConditions.includes('develop')) {
                 dispatch({ type: 'DEVELOP', card: card, oldStrength: oldStrength[0], userField: userField ? true : false })
             }
         }
@@ -82,14 +89,17 @@ const UnitCard = ({ card, hand, userField, enemyField }) => {
 
     return (
         <Card
-        className='card-unit'
-        border='secondary'
-        bg={'dark'}
-        onClick={hand && userTurn ? () => playCard() : null}
+            className='card-unit'
+            border='secondary'
+            bg={'dark'}
+            onClick={hand && userTurn ? () => playCard() : null}
         >
             {card.role == 'env' ?
                 null :
-                <div className="strength">{hand ? oldStrength : card.strength}</div>
+                <div className="strength"
+                    style={{ color: color, borderColor:color}}>
+                    {hand ? oldStrength : card.strength}
+                </div>
             }
             <div className='card-content'>
                 <Card.Img src={logo} />

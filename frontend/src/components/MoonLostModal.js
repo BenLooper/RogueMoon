@@ -1,4 +1,4 @@
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Container, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import history from '../history'
 
@@ -24,19 +24,22 @@ function MoonLostModal(props) {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            className='game-over-modal'
         >
-            <Modal.Body>
-                <h2>DEFEAT</h2>
-                <p>
-                   Luna is lost, the only option left is retreat.
-                </p>
-                <p>
-                   Maybe one day humanity will return to her....
-                </p>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={()=>deleteAccount()}>FLEE THE MOON (your account will be destroyed. Sorry!)</Button>
-            </Modal.Footer>
+            <Container className='game-loss-modal'>
+                <Row>
+                    <Col><h1 style={{ color: 'red', textAlign: 'center' }}>DEFEAT</h1></Col>
+                </Row>
+                <Row>
+                    <Col style={{ fontSize: '35px', textAlign: 'center' }}>Luna is lost, retreat is the only option.</Col>
+                </Row>
+                <Row>
+                    <Col><h2 style={{ color: 'red', textAlign: 'center' }}>THE EARTH IS NEXT.</h2></Col>
+                </Row>
+                <Modal.Footer >
+                    <Button variant='danger' onClick={()=>deleteAccount()} className='game-over-button'>FLEE THE MOON (destroys account)</Button>
+                </Modal.Footer>
+            </Container>
         </Modal>
     );
 }

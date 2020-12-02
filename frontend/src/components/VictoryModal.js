@@ -1,4 +1,4 @@
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Container, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 
 function VictoryModal(props) {
@@ -34,16 +34,19 @@ function VictoryModal(props) {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            className='game-over-modal'
         >
-            <Modal.Body>
-                <h2>Victory!</h2>
-                <p>
-                   You've defeated the AI and liberated this colony!
-                </p>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={createGame}>Return to Base</Button>
-            </Modal.Footer>
+            <Container className='game-won-modal'>
+                <Row>
+                    <Col><h1 style={{ color: 'green', textAlign: 'center' }}>Victory!</h1></Col>
+                </Row>
+                <Row>
+                    <Col style={{ fontSize: '35px', textAlign: 'center' }}>You've out-witted the AI, this colony is liberated!</Col>
+                </Row>
+                <Modal.Footer >
+                    <Button variant='success' onClick={createGame} className='game-over-button'>Return to Base</Button>
+                </Modal.Footer>
+            </Container>
         </Modal>
     );
 }
