@@ -72,6 +72,30 @@
   background: rgb(95, 94, 94);
 }
 
+.score-panel{
+  margin-top: 282px;
+}
+
+
+/* PlayerInfo */
+
+.score-row{
+  max-height:100%;
+}
+
+.total-score-box{
+  text-align: center;
+  align-content: center;
+  max-height: 100%;
+  padding-top: 22px;
+}
+
+.total-score{
+  font-size: 55px;
+  font-weight: 900;
+  color: green;
+  float: center;
+}
 
 /* Trays */
 .card-tray{
@@ -79,6 +103,16 @@
   width:auto;
   border: solid;
   justify-content: center;
+}
+
+.score-tray{
+  height: 130px ;
+  border: solid;
+}
+
+.env-tray{
+  margin-top: 60px;
+  margin-bottom: 50px;
 }
 
 
@@ -132,4 +166,9 @@
 
 .game-over-title{
   justify-content: center;
+}
+
+/* Images */
+.reactor-image{
+  max-height: 100%;
 }

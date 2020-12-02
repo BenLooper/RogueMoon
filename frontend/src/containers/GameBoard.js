@@ -92,7 +92,7 @@ function GameBoard() {
                 result={result} />
 
             <Row>
-                <Col xs={3}>
+                <Col xs={3} >
                     <PlayerInfo />
                 </Col>
                 <Col xs={7} className="battlefield">
