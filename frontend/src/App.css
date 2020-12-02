@@ -37,6 +37,7 @@
   }
 }
 
+
 /* Home */
 .home{
   background: black;
@@ -60,7 +61,17 @@
   transition: height 0.6s ease;
 }
 
+
 /* GameBoard */
+.gameboard{
+  background: black;
+  height:100vh;
+}
+.battlefield{
+  justify-content: center;
+  background: rgb(95, 94, 94);
+}
+
 
 /* Trays */
 .card-tray{
@@ -69,6 +80,7 @@
   border: solid;
   justify-content: center;
 }
+
 
 /* Card */
 .card-unit {
@@ -85,7 +97,6 @@
   border-color: green;
   z-index: 2;
 }
-
 
 .card-content {
   padding: 12px;
@@ -107,4 +118,18 @@
   margin-top: 9px;
   margin-left: 1px;
   text-align: center;
+}
+
+
+/* Modals */
+.game-over-modal{
+  background: black;
+}
+
+.game-over-container{
+  justify-content: center;
+}
+
+.game-over-title{
+  justify-content: center;
 }

@@ -2,7 +2,7 @@ import { Container, Row, Col, CardGroup, Card } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import UnitCard from '../components/UnitCard.js'
-
+import EnemyCard from '../components/EnemyCard.js'
 function Battlefield() {
 
     const dispatch = useDispatch()
@@ -46,11 +46,12 @@ function Battlefield() {
         }
         return score
     }
-    
+
     //On mount, set the game cards and setHands to true 
     useEffect(() => {
         let shuffledEnemyGameCards = shuffle(ownedCards)
         dispatch({ type: 'SET_ENEMY_GAME_CARDS', enemyGameCards: shuffledEnemyGameCards })
+        dispatch({ type: 'RESET_BOARD' })
     }, [])
 
     useEffect(() => {
@@ -64,6 +65,10 @@ function Battlefield() {
         //These rows populate with played cards
         //Furthest left is total strength, then active buff, then cards
         <Container >
+            <Row className="card-tray">
+                {enemyHand.map(card => <EnemyCard />)}
+            </Row>
+            <br></br>
             <Row>
                 <Col style={{ border: 'solid' }}>
                     {rowScore(enemyField.space)}
