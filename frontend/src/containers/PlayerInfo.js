@@ -35,48 +35,15 @@ function PlayerInfo() {
         dispatch({ type: 'END_TURN' })
     }
 
-    const createGame = () => {
-        fetch('http://localhost:3000/games', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Authorization": `Bearer ${window.localStorage.token}`
-            },
-            body: JSON.stringify({
-                game_won: (userReactors > enemyReactors ? true : false)
-            })
-        })
-            .then(res => res.json())
-            .then((userInfo) => {
-                dispatch({
-                    type: 'GAME_OVER',
-                    userVictory: userInfo.newGame.game_won,
-                    games: userInfo.games
-                })
-            })
-    }
-
-    //if one side's reactors are down, end the game 
-    useEffect(() => {
-        if (userReactors === 0 || enemyReactors === 0) {
-            createGame()
-        }
-    }, [userReactors, enemyReactors])
 
     //Checks to see if both have passed 
     //End game actually triggered by ROUND_OVER updating reactors 
-    useEffect(() => {
-        if (userPass && enemyPass) {
-            dispatch({ type: 'ROUND_OVER' })
-            dispatch({ type: 'RESET_BOARD' })
-        }
-    }, [userPass, enemyPass])
+
     //Runs enemy turn after user plays a card / passes 
     useEffect(() => {
         //this prevents him playing before hands are set
         if (gameStart && enemyHand.length === 0) {
-            dispatch({ type: 'ENEMY_PASS' })
+            setTimeout(() => dispatch({ type: 'ENEMY_PASS' }), 2000)
         }
         //if it's his turn and he's passed, he ends his turn 
         else if (userTurn === false && enemyPass && !(userPass)) {
@@ -84,19 +51,19 @@ function PlayerInfo() {
         }
         //if I've passed and it's my turn, it goes back to him
         else if (userTurn === true && userPass === true && !(enemyPass) && !(userTurn)) {
-            dispatch({ type: 'END_TURN' })
+            setTimeout(() => dispatch({ type: 'END_TURN' }), 2000)
         }
-        else if (userPass && (userScore < enemyScore) && !(enemyPass)){
-            dispatch({ type: 'ENEMY_PASS' })
+        else if (userPass && (userScore < enemyScore) && !(enemyPass)) {
+            setTimeout(() => dispatch({ type: 'ENEMY_PASS' }), 2000)
         }
-        else if ((hand.length > enemyHand.length) && (userScore > (enemyScore + 5) && !(enemyPass) && !(userTurn))){
-            dispatch({ type: 'ENEMY_PASS' })
+        else if ((hand.length > enemyHand.length) && (userScore > (enemyScore + 5) && !(enemyPass) && !(userTurn))) {
+            setTimeout(() => dispatch({ type: 'ENEMY_PASS' }), 2000)
         }
-        else if ((enemyScore + 10) < userScore && !(enemyPass)){
-            dispatch({ type: 'ENEMY_PASS' })
+        else if ((enemyScore + 10) < userScore && !(enemyPass)) {
+            setTimeout(() => dispatch({ type: 'ENEMY_PASS' }), 2000)
         }
         //if I've passed or played and it's his turn (and he hasn't passed), he plays a card
-        else if ((userTurn === false || userPass === true) && !(enemyPass)) {
+        else if ((userTurn === false || userPass === true) && !(enemyPass) && gameOn) {
             setTimeout(() => dispatch({ type: 'ENEMY_PLAY' }), 1000)
             if (enemyHand.length >= 1) { setTimeout(() => dispatch({ type: 'END_TURN' }), 2000) }
         }

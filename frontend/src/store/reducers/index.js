@@ -231,7 +231,7 @@ export const reducer = (state, action) => {
                 enemyField: cleanEnemyField.enemyField,
                 userPass: false,
                 enemyPass: false,
-                userTurn: (state.userScore > state.enemyScore ? true : false),
+                userTurn: (state.userScore >= state.enemyScore ? true : false),
                 env: [],
                 userDiscard: [...state.userDiscard, ...newUserDiscard],
                 enemyDiscard: [...state.enemyDiscard, ...newEnemyDiscard],
@@ -256,6 +256,7 @@ export const reducer = (state, action) => {
                 enemyDiscard: []
             }
             break;
+
 
         // ABILITIES 
 
