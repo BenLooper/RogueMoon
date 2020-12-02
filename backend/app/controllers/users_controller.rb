@@ -7,4 +7,7 @@ class UsersController < ApplicationController
         render json: { success:true}
     end 
 
+    def destroy 
+        User.destroy(params[:id])
+    end 
 end
