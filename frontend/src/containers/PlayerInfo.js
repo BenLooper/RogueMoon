@@ -1,7 +1,8 @@
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Image } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import UnitCard from '../components/UnitCard.js'
+import light from '../resources/light.png'
 
 function PlayerInfo() {
 
@@ -20,6 +21,7 @@ function PlayerInfo() {
 
     const userReactors = useSelector((state) => state.userReactors)
     const enemyReactors = useSelector((state) => state.enemyReactors)
+    const [reactors, setReactors] = useState([])
 
     const userVictory = useSelector((state) => state.userVictory)
 
@@ -35,9 +37,9 @@ function PlayerInfo() {
         dispatch({ type: 'END_TURN' })
     }
 
-
-    //Checks to see if both have passed 
-    //End game actually triggered by ROUND_OVER updating reactors 
+    useEffect(() => {
+        setReactors([<Image className="reactor-image" src={light} />, <Image className="reactor-image" src={light} />])
+    }, [])
 
     //Runs enemy turn after user plays a card / passes 
     useEffect(() => {
@@ -70,29 +72,52 @@ function PlayerInfo() {
     }, [userTurn, enemyPass])
 
     return (
-        <div>
-            <h1>User Score: {userScore}</h1>
-            <h1>Enemy Score: {enemyScore}</h1>
+        <div class="score-panel">
+            <Container className='score-tray'>
+                <Row className='score-row'>
+                    <Col>
+                        <Row >
+                            <Col xs={9}>
+                                {enemyReactors === 2 ?
+                                    reactors
+                                    :
+                                    <Image src={light} />
+                                }
+                            </Col>
+                            <Col className="total-score-box">
+                                <span class="total-score">{enemyScore}</span>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Container>
             <br></br>
-            <h1>User cards in hand: {hand.length}</h1>
-            <h1>Enemy cards in hand: {enemyHand.length}</h1>
-            <br></br>
-            <h1>User Reactors Left: {userReactors}</h1>
-            <h1>Enemy Reactors Left: {enemyReactors}</h1>
-            <br></br>
-            <Container>
+            <Container className="env-tray">
                 <Row>
                     <Col>
                         <Row className="card-tray">{env.map(card => <UnitCard card={card} key={card.id} />)} </Row>
                     </Col>
                 </Row>
             </Container>
-            <h1>Turn: {userTurn ? 'User' : 'Enemy'}</h1>
-            <h1>User Passed: {userPass ? 'Yes' : 'No'}</h1>
-            <h1>Enemy Passed: {enemyPass ? 'Yes' : 'No'}</h1>
-            <button onClick={pass}>Pass</button>
-            {/* <h1>Games Played: {games.length}</h1> */}
-            <h1>GAME WINNER: {userVictory && userVictory !== null ? 'User' : 'Enemy'}</h1>
+            <br></br>
+            <Container className="score-tray" >
+                <Row className='score-row'>
+                    <Col>
+                        <Row >
+                            <Col xs={9}>
+                                {userReactors === 2 ?
+                                    reactors
+                                    :
+                                    <Image className="reactor-image" src={light} />
+                                }
+                            </Col>
+                            <Col className="total-score-box">
+                                <span class="total-score">{userScore}</span>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }
