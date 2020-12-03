@@ -36,17 +36,17 @@ function LossModal(props) {
             centered
             className="game-over-modal"
         >
-            <Container className="game-over-container">
+            <Container className='game-loss-modal'>
                 <Row>
-                    <Col className="game-over-title"><h1>Defeat!</h1></Col>
+                    <Col><h1 style={{color:'red',textAlign:'center'}}>Defeat!</h1></Col>
                 </Row>
                 <Row>
-                    <Col>The AI has crushed your forces, this colony is lost.</Col>
+                    <Col style={{fontSize:'35px',textAlign:'center'}}>The AI has crushed your forces, this colony is lost.</Col>
                 </Row>
+                <Modal.Footer >
+                    <Button variant='danger' onClick={createGame} className='game-over-button'>Return to Base</Button>
+                </Modal.Footer>
             </Container>
-            <Modal.Footer>
-                <Button variant='danger' onClick={createGame}>Return to Base</Button>
-            </Modal.Footer>
         </Modal>
     );
 }

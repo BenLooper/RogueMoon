@@ -1,4 +1,4 @@
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Container, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import history from '../history'
 
@@ -10,17 +10,22 @@ function MoonWonModal(props) {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            className="game-over-modal"
         >
-            <Modal.Body>
-                <h2>MOON LIBERATED!</h2>
-                <p>
-                   The Rogue AI has been routed and humanity has retaken control of the moon.
-                </p>
-                <p>Thanks for playing!</p>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={()=>props.setShow(false)}>Keep Playing!</Button>
-            </Modal.Footer>
+            <Container className='game-won-modal'>
+                <Row>
+                    <Col><h1 style={{ color: 'green', textAlign: 'center' }}>MOON LIBERATED!</h1></Col>
+                </Row>
+                <Row>
+                    <Col style={{ fontSize: '35px', textAlign: 'center' }}>The Rogue AI has been routed and humanity has retaken control of the moon.</Col>
+                </Row>
+                <Row>
+                    <Col><h1 style={{ color: 'green', textAlign: 'center' }}>Thanks for playing!</h1></Col>
+                </Row>
+                <Modal.Footer >
+                    <Button variant='success' onClick={() => props.setShow(false)} className='game-over-button'>Keep Playing!</Button>
+                </Modal.Footer>
+            </Container>
         </Modal>
     );
 }

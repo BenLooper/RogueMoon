@@ -1,6 +1,6 @@
-import { Container, Row, Col, CardGroup, Card } from 'react-bootstrap'
+import { Container, Row, Col, CardGroup, Card, Spinner, Button } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import UnitCard from '../components/UnitCard.js'
 import EnemyCard from '../components/EnemyCard.js'
 function Battlefield() {
@@ -13,12 +13,16 @@ function Battlefield() {
     const enemyField = useSelector((state) => state.enemyField)
     const userField = useSelector((state) => state.userField)
     const env = useSelector((state) => state.env)
+    const [conditions, setConditions] = useState([])
 
     const ownedCards = useSelector((state) => state.ownedCards)
 
-
     const hand = useSelector((state) => state.hand)
     const enemyHand = useSelector((state) => state.enemyHand)
+
+    const userPass = useSelector((state) => state.userPass)
+    const enemyPass = useSelector((state) => state.enemyPass)
+    const userTurn = useSelector((state) => state.userTurn)
 
     const shuffle = (array) => {
         let currentIndex = array.length, temporaryValue, randomIndex;
@@ -60,6 +64,9 @@ function Battlefield() {
         }
     }, [drawHands])
 
+    useEffect(() => {
+        setConditions(env.map(card => card.ability))
+    },[env])
 
     return (
         //These rows populate with played cards
@@ -70,27 +77,25 @@ function Battlefield() {
             </Row>
             <br></br>
             <Row>
-                <Col style={{ border: 'solid' }}>
-                    {rowScore(enemyField.space)}
+                <Col style={{ border: 'solid' }} className="row-score-box">
+                    <span style={{ color:conditions.includes('flare')?'red':'green' }} class="row-score">{rowScore(enemyField.space)}</span>
                 </Col>
-                <Col xs={10}>
+                <Col xs={10} >
                     <Row className="card-tray">{enemyField.space.map(card => <UnitCard card={card} env={env} userField={false} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
             <Row>
-                <Col style={{ border: 'solid' }}>
-                    {rowScore(enemyField.ground)}
-                </Col>
+                <Col style={{ border: 'solid' }} className="row-score-box">
+                    <span style={{ color:conditions.includes('rocky')?'red':'green' }} class="row-score">{rowScore(enemyField.ground)}</span>                </Col>
                 <Col xs={10}>
                     <Row className="card-tray">{enemyField.ground.map(card => <UnitCard card={card} env={env} userField={false} key={card.id} />)}</Row>
                 </Col>
 
             </Row>
             <Row>
-                <Col style={{ border: 'solid' }}>
-                    {rowScore(enemyField.foot)}
-                </Col>
+                <Col style={{ border: 'solid' }} className="row-score-box">
+                    <span style={{ color:conditions.includes('cold')?'red':'green' }} class="row-score">{rowScore(enemyField.foot)}</span>                </Col>
                 <Col xs={10}>
                     <Row className="card-tray">{enemyField.foot.map(card => <UnitCard card={card} env={env} userField={false} key={card.id} />)}</Row>
                 </Col>
@@ -98,8 +103,8 @@ function Battlefield() {
             </Row>
             <br></br>
             <Row>
-                <Col style={{ border: 'solid' }}>
-                    {rowScore(userField.foot)}
+                <Col style={{ border: 'solid' }} className="row-score-box">
+                    <span style={{ color:conditions.includes('cold')?'red':'green' }} class="row-score">{rowScore(userField.foot)}</span>
                 </Col>
                 <Col xs={10}>
                     <Row className="card-tray">{userField.foot.map(card => <UnitCard card={card} env={env} userField={true} key={card.id} />)}</Row>
@@ -107,8 +112,8 @@ function Battlefield() {
 
             </Row>
             <Row>
-                <Col style={{ border: 'solid' }}>
-                    {rowScore(userField.ground)}
+                <Col style={{ border: 'solid' }} className="row-score-box">
+                    <span style={{ color:conditions.includes('rocky')?'red':'green' }} class="row-score">{rowScore(userField.ground)}</span>
                 </Col>
                 <Col xs={10}>
                     <Row className="card-tray">{userField.ground.map(card => <UnitCard card={card} env={env} userField={true} key={card.id} />)}</Row>
@@ -116,8 +121,8 @@ function Battlefield() {
 
             </Row>
             <Row>
-                <Col style={{ border: 'solid' }}>
-                    {rowScore(userField.space)}
+                <Col style={{ border: 'solid' }} className="row-score-box">
+                    <span style={{ color:conditions.includes('flare')?'red':'green' }} class="row-score">{rowScore(userField.space)}</span>
                 </Col>
                 <Col xs={10}>
                     <Row className="card-tray">{userField.space.map(card => <UnitCard card={card} env={env} userField={true} key={card.id} />)}</Row>
@@ -128,6 +133,27 @@ function Battlefield() {
             {/* This row populates with cards drawn from a users deck.  */}
             <Row className="card-tray">
                 {hand.map(card => <UnitCard card={card} hand={true} key={card.id + 1} />)}
+            </Row>
+            <Row className="turn-box">
+                <Col>
+                    {userTurn && (!(userPass))?
+                    <Button variant="success" disabled>
+                        Your turn!
+                    </Button>
+                    :null}
+                    {!userTurn && (!(enemyPass))?
+                    <Button variant="danger" disabled>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                       AI is thinking...
+                  </Button>
+                    :null}
+                </Col>
             </Row>
         </Container>
     )

@@ -11,8 +11,8 @@ function PassModal(props) {
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
-            <Modal.Body>
-                <h2>{props.player} Pass</h2>
+            <Modal.Body className='game-modal'>
+                <h2 style={{color:'white', textAlign:'center'}}>{props.player} Pass</h2>
             </Modal.Body>
         </Modal>
     );

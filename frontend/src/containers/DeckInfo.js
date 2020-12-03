@@ -1,5 +1,6 @@
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Button, Image } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
+import passFlag from '../resources/passFlag.png'
 
 function DeckInfo() {
     const dispatch = useDispatch()
@@ -15,11 +16,37 @@ function DeckInfo() {
     }
 
     return (
-        <div>
-            <h1>Turn: {userTurn ? 'User' : 'Enemy'}</h1>
-            <h1>User Passed: {userPass ? 'Yes' : 'No'}</h1>
-            <h1>Enemy Passed: {enemyPass ? 'Yes' : 'No'}</h1>
-            <button onClick={pass}>Pass</button>
+        <div class="pass-panel">
+            <Container className='flag-tray'>
+                <Row >
+                    <Col>
+                        {enemyPass ? <Image src={passFlag} /> : null}
+                    </Col>
+                </Row>
+            </Container>
+            <br></br>
+            <Container className="pass-button-tray">
+                <Row>
+                    <Col>
+                        <Button
+                            variant='danger'
+                            className="pass-button"
+                            disabled={userTurn && !(userPass) ? false : true}
+                            onClick={() => pass()}
+                            size='lg'>
+                            PASS
+                        </Button>
+                    </Col>
+                </Row>
+            </Container>
+            <br></br>
+            <Container className="flag-tray" >
+                <Row>
+                    <Col>
+                        {userPass ? <Image src={passFlag} /> : null}
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

@@ -64,9 +64,10 @@
 
 /* GameBoard */
 .gameboard{
-  background: black;
+  background: rgb(0, 0, 0);
   height:100vh;
 }
+
 .battlefield{
   justify-content: center;
   background: rgb(95, 94, 94);
@@ -76,9 +77,31 @@
   margin-top: 282px;
 }
 
+.pass-panel{
+  margin-top: 320px;
+}
+
+
+/* Battlefield */
+.row-score{
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.row-score-box{
+  text-align: center;
+  padding-top: 30px;
+}
+
+.turn-box{
+  text-align: center;
+  height: 60px ;
+  width:auto;
+  padding-top: 20px;
+}
+
 
 /* PlayerInfo */
-
 .score-row{
   max-height:100%;
 }
@@ -93,9 +116,12 @@
 .total-score{
   font-size: 55px;
   font-weight: 900;
-  color: green;
+  color: rgb(59, 117, 59);
   float: center;
 }
+
+/* Pass Panel */
+
 
 /* Trays */
 .card-tray{
@@ -113,6 +139,15 @@
 .env-tray{
   margin-top: 60px;
   margin-bottom: 50px;
+}
+
+.pass-button-tray{
+  margin-top: 60px;
+  margin-bottom: 50px;
+}
+
+.flag-tray{
+  height: 130px ;
 }
 
 
@@ -142,13 +177,11 @@
 }
 
 .strength{
-  color: red;
   height: 30px;
   width: 30px;
   border-radius: 50%;
   border: solid; 
   border-width: 2px;
-  border-color: red;
   margin-top: 9px;
   margin-left: 1px;
   text-align: center;
@@ -160,13 +193,23 @@
   background: black;
 }
 
-.game-over-container{
-  justify-content: center;
+.game-loss-modal{
+  background-color: rgb(131, 95, 95);
+  border:solid;
+  border-color: red;
 }
 
-.game-over-title{
-  justify-content: center;
+.game-won-modal{
+  background-color: rgb(127, 156, 114);
+  border:solid;
+  border-color: rgb(47, 204, 33);
 }
+
+.game-modal{
+  background-color: black;
+  border-width: 2px;
+}
+
 
 /* Images */
 .reactor-image{

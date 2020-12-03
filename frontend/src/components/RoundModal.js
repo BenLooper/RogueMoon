@@ -10,8 +10,8 @@ function RoundModal(props) {
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
-            <Modal.Body>
-                <h2>Round {props.result}!</h2>
+            <Modal.Body className='game-modal'>
+                <h2 style={{color:props.result=='won'?'green':'red', textAlign:'center'}}>Round {props.result}!</h2>
             </Modal.Body>
         </Modal>
     );
