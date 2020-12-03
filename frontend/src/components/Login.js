@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Container, Row, Col, Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import history from '../history'
 
@@ -11,6 +12,7 @@ const Login = () => {
     const passwordInput = useSelector((state) => state.passwordInput)
 
     const handleUsernameChange = (e) => {
+        console.log(e.target)
         dispatch({ type: 'CHANGE_USERNAME_INPUT', value: e.target.value })
     }
 
@@ -18,7 +20,8 @@ const Login = () => {
         dispatch({ type: 'CHANGE_PASSWORD_INPUT', value: e.target.value })
     }
 
-    const handleLogin = () => {
+    const handleLogin = (e) => {
+        e.preventDefault();
         fetch('http://localhost:3000/auth', {
             method: 'POST',
             headers: {
@@ -39,7 +42,8 @@ const Login = () => {
 
     }
 
-    const handleSignUp = () => {
+    const handleSignUp = (e) => {
+        e.preventDefault();
         fetch('http://localhost:3000/users', {
             method: "POST",
             headers: {
@@ -51,21 +55,46 @@ const Login = () => {
                 password: passwordInput
             })
         })
-        .then(res=>res.json())
-        .then(message => message.success?handleLogin():console.log('error'))
+            .then(res => res.json())
+            .then(message => message.success ? handleLogin(e) : console.log('error'))
     }
 
     return (
-        <div>
-            <input type='text' placeholder='username' onChange={(e) => handleUsernameChange(e)} />
-            <br></br>
-            <input type='text' placeholder='password' onChange={(e) => handlePasswordChange(e)} />
-            <button onClick={signUp?handleSignUp:handleLogin}>Submit</button>
-            <br></br>
-            <button onClick={signUp ? () => setSignUp(false) : () => setSignUp(true)}>
-                {signUp ? 'Existing User' : 'New User'}
-            </button>
-        </div>
+        <Container className="login-page" fluid>
+            <Row>
+                <Col className="login-form">
+                    <Form onSubmit={(e) => signUp ? handleSignUp(e) : handleLogin(e)}>
+                        <Col style={{ paddingLeft: '30px' }}>
+                            <h1 style={{ color: 'grey', fontFamily: 'impact' }}>ROGUE MOON</h1>
+                        </Col>
+                        <Col xs={3}>
+                            <Form.Group controlId='userInput'>
+                                <Form.Label style={{ color: 'white', fontFamily: 'impact' }}>Username</Form.Label>
+                                <Form.Control style={{ color: 'black', fontFamily: 'impact' }} onChange={(e) => handleUsernameChange(e)} placeholder="Enter username" />
+                            </Form.Group>
+                        </Col>
+
+                        <Col xs={3}>
+                            <Form.Group controlId="passwordInput">
+                                <Form.Label style={{ color: 'white', fontFamily: 'impact' }}>Password</Form.Label>
+                                <Form.Control style={{ color: 'black', fontFamily: 'impact' }} onChange={(e) => handlePasswordChange(e)} type="password" placeholder="Password" />
+                            </Form.Group>
+                        </Col>
+                        <Col xs={3} style={{ paddingLeft: '90px', color: 'black', fontFamily: 'impact' }}>
+                            <Button style={{ color: 'black' }} variant="success" type="submit" >
+                                {signUp ? 'Sign up' : 'Login'}
+                            </Button>
+                        </Col>
+                        <br></br>
+                        <Col xs={3} style={{ paddingLeft: '55px', fontFamily: 'impact' }}>
+                            <Button style={{ color: 'black' }} onClick={signUp ? () => setSignUp(false) : () => setSignUp(true)}>
+                                {signUp ? 'Existing Users Click' : 'New Users Click'}
+                            </Button>
+                        </Col>
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
     )
 }
 
