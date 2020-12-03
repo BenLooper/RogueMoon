@@ -28,16 +28,16 @@ function MoonLostModal(props) {
         >
             <Container className='game-loss-modal'>
                 <Row>
-                    <Col><h1 style={{ color: 'red', textAlign: 'center' }}>DEFEAT</h1></Col>
+                    <Col><h1 style={{ fontFamily:'impact', color: 'red', textAlign: 'center' }}>DEFEAT</h1></Col>
                 </Row>
                 <Row>
-                    <Col style={{ fontSize: '35px', textAlign: 'center' }}>Luna is lost, retreat is the only option.</Col>
+                    <Col style={{ fontFamily:'impact', fontSize: '35px', textAlign: 'center' }}>Luna is lost, retreat is the only option.</Col>
                 </Row>
                 <Row>
-                    <Col><h2 style={{ color: 'red', textAlign: 'center' }}>THE EARTH IS NEXT.</h2></Col>
+                    <Col><h2 style={{ fontFamily:'impact', color: 'red', textAlign: 'center' }}>THE EARTH IS NEXT.</h2></Col>
                 </Row>
                 <Modal.Footer >
-                    <Button variant='danger' onClick={()=>deleteAccount()} className='game-over-button'>FLEE THE MOON (destroys account)</Button>
+                    <Button style={{fontFamily:'impact', color:'black'}} variant='danger' onClick={()=>deleteAccount()} className='game-over-button'>FLEE THE MOON (destroys account)</Button>
                 </Modal.Footer>
             </Container>
         </Modal>

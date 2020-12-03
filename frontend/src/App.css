@@ -37,20 +37,42 @@
   }
 }
 
+.backdrop{
+  background:rgb(0, 0, 0)
+}
 
 /* Home */
 .home{
-  background: black;
   height: 100vh;
-  align-items: center;
+  background-image: url('./resources/moon-bg.jpeg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  -webkit-animation: myfirst 4s ; /* Chrome, Safari, Opera */
+      animation: myfirst 4s ;
 }
 
+
+  /* Chrome, Safari, Opera */
+  @-webkit-keyframes myfirst {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  /* Standard syntax */
+  @keyframes myfirst {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  
 .progress-bar-vertical{
   width: 40px;
-  min-height: 400px;
+  min-height: 800px;
   display: flex;
   align-items: flex-end;
-  margin-right: 20px;
+  text-align: right;
+  border: solid;
 }
 
 .progress-bar-vertical .progress-bar {

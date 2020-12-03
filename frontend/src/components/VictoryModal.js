@@ -38,13 +38,13 @@ function VictoryModal(props) {
         >
             <Container className='game-won-modal'>
                 <Row>
-                    <Col><h1 style={{ color: 'green', textAlign: 'center' }}>Victory!</h1></Col>
+                    <Col><h1 style={{ fontFamily:'impact', color: 'green', textAlign: 'center' }}>Victory!</h1></Col>
                 </Row>
                 <Row>
-                    <Col style={{ fontSize: '35px', textAlign: 'center' }}>You've out-witted the AI, this colony is liberated!</Col>
+                    <Col style={{ fontFamily:'impact', fontSize: '35px', textAlign: 'center' }}>You've out-witted the AI, this colony is liberated!</Col>
                 </Row>
                 <Modal.Footer >
-                    <Button variant='success' onClick={createGame} className='game-over-button'>Return to Base</Button>
+                    <Button style={{fontFamily:'impact', color:'black'}}variant='success' onClick={createGame} className='game-over-button'>Return to Base</Button>
                 </Modal.Footer>
             </Container>
         </Modal>

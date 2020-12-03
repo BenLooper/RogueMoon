@@ -11,7 +11,7 @@ function RoundModal(props) {
             centered
         >
             <Modal.Body className='game-modal'>
-                <h2 style={{color:props.result=='won'?'green':'red', textAlign:'center'}}>Round {props.result}!</h2>
+                <h2 style={{fontFamily:'impact', color:props.result=='won'?'green':'red', textAlign:'center'}}>Round {props.result}!</h2>
             </Modal.Body>
         </Modal>
     );

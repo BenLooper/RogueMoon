@@ -12,7 +12,7 @@ function PassModal(props) {
             centered
         >
             <Modal.Body className='game-modal'>
-                <h2 style={{color:'white', textAlign:'center'}}>{props.player} Pass</h2>
+                <h2 style={{fontFamily:'impact', color:'white', textAlign:'center'}}>{props.player} Pass</h2>
             </Modal.Body>
         </Modal>
     );

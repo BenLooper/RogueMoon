@@ -29,6 +29,7 @@ function DeckInfo() {
                 <Row>
                     <Col>
                         <Button
+                            style={{fontFamily:'impact', color:'black'}}
                             variant='danger'
                             className="pass-button"
                             disabled={userTurn && !(userPass) ? false : true}
