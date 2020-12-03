@@ -14,16 +14,16 @@ function MoonWonModal(props) {
         >
             <Container className='game-won-modal'>
                 <Row>
-                    <Col><h1 style={{ color: 'green', textAlign: 'center' }}>MOON LIBERATED!</h1></Col>
+                    <Col><h1 style={{ fontFamily:'impact', color: 'green', textAlign: 'center' }}>MOON LIBERATED!</h1></Col>
                 </Row>
                 <Row>
-                    <Col style={{ fontSize: '35px', textAlign: 'center' }}>The Rogue AI has been routed and humanity has retaken control of the moon.</Col>
+                    <Col style={{ fontFamily:'impact', fontSize: '35px', textAlign: 'center' }}>The Rogue AI has been routed and humanity has retaken control of the moon.</Col>
                 </Row>
                 <Row>
-                    <Col><h1 style={{ color: 'green', textAlign: 'center' }}>Thanks for playing!</h1></Col>
+                    <Col><h1 style={{ fontFamily:'impact', color: 'green', textAlign: 'center' }}>Thanks for playing!</h1></Col>
                 </Row>
                 <Modal.Footer >
-                    <Button variant='success' onClick={() => props.setShow(false)} className='game-over-button'>Keep Playing!</Button>
+                    <Button style={{fontFamily:'impact', color:'black'}} variant='success' onClick={() => props.setShow(false)} className='game-over-button'>Keep Playing!</Button>
                 </Modal.Footer>
             </Container>
         </Modal>

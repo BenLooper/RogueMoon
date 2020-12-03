@@ -31,7 +31,7 @@ function Home() {
 
     const logout = () => {
         window.localStorage.token = ''
-        dispatch({type:'@@INIT'})
+        dispatch({ type: '@@INIT' })
         history.push('/login')
     }
 
@@ -44,47 +44,52 @@ function Home() {
         enemyProgress.style.height = `${gamesLost * 10}%`
         userProgress.style.height = `${gamesWon * 10}%`
 
-        if (gamesWon >= 10){
+        if (gamesWon >= 10) {
             setWonModalShow(true)
         }
-        else if (gamesLost === 10 && gamesWon < 10){
+        else if (gamesLost === 10 && gamesWon < 10) {
             setLostModalShow(true)
         }
     })
 
     const handleClick = () => {
         let shuffledGameCards = shuffle(ownedCards)
-        dispatch({type:"SET_GAME_CARDS", gameCards: shuffledGameCards})
-        dispatch({type:"START_GAME"})
+        dispatch({ type: "SET_GAME_CARDS", gameCards: shuffledGameCards })
+        dispatch({ type: "START_GAME" })
     }
 
     return (
-        <Container className='home' fluid >
+        <div className='backdrop'>
+            <Container className='home' fluid >
 
-            <MoonWonModal
-            show={wonModalShow}
-            setShow={setWonModalShow}/>
+                <MoonWonModal
+                    show={wonModalShow}
+                    setShow={setWonModalShow} />
 
-            <MoonLostModal
-            show={lostModalShow}/>
+                <MoonLostModal
+                    show={lostModalShow} />
 
-            <h1>Hello {user.username}</h1>
-            <Button variant='danger' onClick={() => logout()}>Logout</Button>
-            <br></br>
-            <Row>
-                <Col>
-                    <label>Victory</label>
-                    <ProgressBar className="progress-bar-vertical" srOnly variant='success' />
-                </Col>
-                <Col>
-                    <Button size='lg' variant='danger' onClick={handleClick}>Battle</Button>
-                </Col>
-                <Col>
-                    <label>Defeat</label>
-                    <ProgressBar className="progress-bar-vertical" srOnly variant='danger' />
-                </Col>
-            </Row>
-        </Container>
+                <h1>{user.username}</h1>
+                <br></br>
+                <Button style={{fontFamily:'impact', color:'black'}} variant='danger' onClick={() => logout()}>Logout</Button>
+                <Row>
+                    <Col style={{ fontFamily: 'impact', textAlign: 'center', paddingLeft: '93px' }}>
+                        <h1 style={{ fontWeight: 'bold', color: 'green' }}>Victory</h1>
+                    </Col>
+                    <Col style={{ fontFamily: 'impact', textAlign: 'center', paddingRight: '93px' }}>
+                        <h1 style={{ fontWeight: 'bold', color: 'red' }}>Defeat</h1>
+                    </Col>
+                </Row>
+                <br></br>
+                <Row className='home-row'>
+                    <ProgressBar style={{ marginLeft: '500px' }} className="progress-bar-vertical" animated srOnly variant='success' />
+                    <Col style={{ textAlign: 'center', paddingTop: '400px', width: '30px' }}>
+                        <Button style={{fontFamily:'impact', color:'black'}}size='lg' variant='danger' onClick={handleClick}>Liberate A Colony</Button>
+                    </Col>
+                    <ProgressBar style={{ marginRight: '500px' }} className="progress-bar-vertical" animated srOnly variant='danger' />
+                </Row>
+            </Container>
+        </div>
     )
 }
 

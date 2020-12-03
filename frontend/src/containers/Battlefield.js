@@ -136,13 +136,13 @@ function Battlefield() {
             </Row>
             <Row className="turn-box">
                 <Col>
-                    {userTurn && (!(userPass))?
-                    <Button variant="success" disabled>
+                    {((userTurn && (!(userPass))) || (enemyPass && !(userPass)))?
+                    <Button style={{fontFamily:'impact', color:'black'}} variant="success" disabled>
                         Your turn!
                     </Button>
                     :null}
-                    {!userTurn && (!(enemyPass))?
-                    <Button variant="danger" disabled>
+                    {((!userTurn && (!(enemyPass))) || (userPass && !(enemyPass)))?
+                    <Button style={{fontFamily:'impact', color:'black'}} variant="danger" disabled>
                     <Spinner
                       as="span"
                       animation="border"

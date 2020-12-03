@@ -38,13 +38,13 @@ function LossModal(props) {
         >
             <Container className='game-loss-modal'>
                 <Row>
-                    <Col><h1 style={{color:'red',textAlign:'center'}}>Defeat!</h1></Col>
+                    <Col><h1 style={{fontFamily:'impact', color:'red',textAlign:'center'}}>Defeat!</h1></Col>
                 </Row>
                 <Row>
-                    <Col style={{fontSize:'35px',textAlign:'center'}}>The AI has crushed your forces, this colony is lost.</Col>
+                    <Col style={{fontFamily:'impact',fontSize:'35px',textAlign:'center'}}>The AI has crushed your forces, this colony is lost.</Col>
                 </Row>
                 <Modal.Footer >
-                    <Button variant='danger' onClick={createGame} className='game-over-button'>Return to Base</Button>
+                    <Button style={{fontFamily:'impact', color:'black'}} variant='danger' onClick={createGame} className='game-over-button'>Return to Base</Button>
                 </Modal.Footer>
             </Container>
         </Modal>
