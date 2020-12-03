@@ -237,3 +237,17 @@
 .reactor-image{
   max-height: 100%;
 }
+
+
+/* Login Page */
+
+.login-page{
+  background-color: black;
+  height: 100vh;
+}
+
+.login-form{
+  padding-top: 450px;
+  margin-left: 840px;
+  justify-content: center;
+}
