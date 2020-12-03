@@ -3,6 +3,8 @@ Card.destroy_all
 OwnedCard.destroy_all
 
 ben = User.create(username:'Ben', password:'asdf')
+game_won = User.create(username:'Victory', password:'asdf')
+game_lost = User.create(username:'Defeat', password:'asdf')
 
 Card.create(name:'Develop',	image:'https://opengameart.org/sites/default/files/styles/medium/public/coruscant_by_night_by_jfliesenborghs-d93rhyn_500.jpg', flavor_text:'Level the playing field', is_special: true, role:'env', strength:0, ability:'develop')
 Card.create(name:'Cold of Space', image:'https://picsum.photos/200/300', flavor_text:'So cold...', is_special:true, role:'env', strength:0, ability:'cold')
@@ -33,3 +35,13 @@ Card.create(name:"Exosuit Miner", image:'https://picsum.photos/200/300', flavor_
 Card.create(name:'Drew MoonWalker', image:'https://picsum.photos/200/300', flavor_text:"Do ya'll have any beer?", is_special:false, role:'foot', strength:10, ability:'mock')
 
 Card.all.each {|card| OwnedCard.create(user:ben, card:card)}
+Card.all.each {|card| OwnedCard.create(user:game_lost, card:card)}
+Card.all.each {|card| OwnedCard.create(user:game_won, card:card)}
+
+9.times do 
+    Game.create(user:game_won, game_won:true)
+end 
+
+9.times do 
+    Game.create(user:game_lost, game_won:false)
+end 

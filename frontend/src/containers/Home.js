@@ -73,10 +73,10 @@ function Home() {
                 <br></br>
                 <Button style={{fontFamily:'impact', color:'black'}} variant='danger' onClick={() => logout()}>Logout</Button>
                 <Row>
-                    <Col style={{ fontFamily: 'impact', textAlign: 'center', paddingLeft: '93px' }}>
+                    <Col style={{ fontFamily: 'impact', textAlign: 'center', paddingLeft: '120px' }}>
                         <h1 style={{ fontWeight: 'bold', color: 'green' }}>Victory</h1>
                     </Col>
-                    <Col style={{ fontFamily: 'impact', textAlign: 'center', paddingRight: '93px' }}>
+                    <Col style={{ fontFamily: 'impact', textAlign: 'center', paddingRight: '120px' }}>
                         <h1 style={{ fontWeight: 'bold', color: 'red' }}>Defeat</h1>
                     </Col>
                 </Row>
