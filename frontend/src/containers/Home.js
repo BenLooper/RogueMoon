@@ -44,20 +44,20 @@ function Home() {
         enemyProgress.style.height = `${gamesLost * 10}%`
         userProgress.style.height = `${gamesWon * 10}%`
 
-        if (gamesWon >= 10) {
+        if (gamesWon === 10) {
             setWonModalShow(true)
         }
         else if (gamesLost === 10 && gamesWon < 10) {
             setLostModalShow(true)
         }
-    })
+    },[games])
 
     const handleClick = () => {
         let shuffledGameCards = shuffle(ownedCards)
         dispatch({ type: "SET_GAME_CARDS", gameCards: shuffledGameCards })
         dispatch({ type: "START_GAME" })
     }
-
+ 
     return (
         <div className='backdrop'>
             <Container className='home' fluid >
