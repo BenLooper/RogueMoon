@@ -6,13 +6,13 @@ import history from '../history'
 const Login = () => {
 
     const [signUp, setSignUp] = useState(false);
-
+    const [error, setError] = useState(false);
+    const [exists, setExists] = useState(false);
     const dispatch = useDispatch()
     const usernameInput = useSelector((state) => state.usernameInput)
     const passwordInput = useSelector((state) => state.passwordInput)
 
     const handleUsernameChange = (e) => {
-        console.log(e.target)
         dispatch({ type: 'CHANGE_USERNAME_INPUT', value: e.target.value })
     }
 
@@ -35,9 +35,15 @@ const Login = () => {
         })
             .then(res => res.json())
             .then(userInfo => {
-                dispatch({ type: 'SET_USER', user: userInfo.user, ownedCards: userInfo.cards, games: userInfo.games })
-                window.localStorage.token = userInfo.jwt
-                history.push('/')
+                if (userInfo.error) {
+                    setError(true);
+                    setTimeout( () => setError(false), 3000)
+                }
+                else {
+                    dispatch({ type: 'SET_USER', user: userInfo.user, ownedCards: userInfo.cards, games: userInfo.games })
+                    window.localStorage.token = userInfo.jwt
+                    history.push('/')
+                }
             })
 
     }
@@ -56,7 +62,11 @@ const Login = () => {
             })
         })
             .then(res => res.json())
-            .then(message => message.success ? handleLogin(e) : console.log('error'))
+            .then(message => {
+                message.success ? handleLogin(e) : setExists(true) 
+                setTimeout( () => setExists(false), 3000)
+            })
+        
     }
 
     return (
@@ -79,6 +89,16 @@ const Login = () => {
                                 <Form.Label style={{ color: 'white', fontFamily: 'impact' }}>Password</Form.Label>
                                 <Form.Control style={{ color: 'black', fontFamily: 'impact' }} onChange={(e) => handlePasswordChange(e)} type="password" placeholder="Password" />
                             </Form.Group>
+                        </Col>
+                        <Col style={{ color: 'red', fontFamily: 'impact' }}>
+                            {error ? 
+                                <p>Incorrect username or password</p>
+                                : null
+                            }
+                            {exists ?
+                                <p>Username has been taken</p>
+                                : null
+                            }
                         </Col>
                         <Col xs={3} style={{ paddingLeft: '90px', color: 'black', fontFamily: 'impact' }}>
                             <Button style={{ color: 'black' }} variant="success" type="submit" >
